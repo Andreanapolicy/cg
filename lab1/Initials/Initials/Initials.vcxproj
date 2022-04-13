@@ -120,6 +120,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\daaan\Projects\cg\lab1\SFML\lib;../../../SFML/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,7 +140,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CCanvas.cpp" />
+    <ClCompile Include="ICanvas.cpp" />
     <ClCompile Include="Initials.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CCanvas.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Frame.h" />
+    <ClInclude Include="ICanvas.h" />
+    <ClInclude Include="Point.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,22 +4,32 @@
 #include "./CRectangle.h"
 #include "./CGroup.h"
 #include "./CEllipse.h"
+#include "./windowFunctions.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
-#include <windows.h>
-
-std::shared_ptr<IShape> SetLetterD(Color color, PointD bias);
-std::shared_ptr<IShape> SetLetterA(Color color, PointD bias);
-std::shared_ptr<CSlide> CreateSlide();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
+	if (!RegisterWndClass(hInstance))
+	{
+		return 1;
+	}
+	
+	HWND hMainWindow = CreateMainWindow(hInstance);
+	if (hMainWindow == NULL)
+	{
+		return 1;
+	}
+
+	ShowWindow(hMainWindow, nCmdShow);
+	UpdateWindow(hMainWindow);
+
 	auto slide = CreateSlide();
 
 	auto width = (unsigned int)slide->GetWidth();
 	auto height = (unsigned int)slide->GetHeight();
 
-	sf::RenderWindow renderWindow(sf::VideoMode(width, height), "Result");
+	sf::RenderWindow renderWindow(hMainWindow);
 	CCanvas canvas(renderWindow);
 
 	while (renderWindow.isOpen())

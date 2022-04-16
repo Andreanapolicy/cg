@@ -10,26 +10,12 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
-	if (!RegisterWndClass(hInstance))
-	{
-		return 1;
-	}
-	
-	HWND hMainWindow = CreateMainWindow(hInstance);
-	if (hMainWindow == NULL)
-	{
-		return 1;
-	}
-
-	ShowWindow(hMainWindow, nCmdShow);
-	UpdateWindow(hMainWindow);
-
 	auto slide = CreateSlide();
 
 	auto width = (unsigned int)slide->GetWidth();
 	auto height = (unsigned int)slide->GetHeight();
 
-	sf::RenderWindow renderWindow(hMainWindow);
+	sf::RenderWindow renderWindow(sf::VideoMode(width, height), "Result");
 	CCanvas canvas(renderWindow);
 
 	while (renderWindow.isOpen())

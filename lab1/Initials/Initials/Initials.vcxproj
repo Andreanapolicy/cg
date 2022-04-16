@@ -116,11 +116,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../../SFML/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\daaan\Projects\cg\lab1\SFML\lib;../../../SFML/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../SFML/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>../../SFML/lib/sfml-graphics-d.lib;../../SFML/lib/sfml-window-d.lib;../../SFML/lib/sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

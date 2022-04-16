@@ -1,7 +1,7 @@
 #include "CRectangle.h"
 
 CRectangle::CRectangle(PointD point, double width, double height)
-	: m_frame({ point, width, height })
+	: m_frame({point, width, height})
 {
 }
 

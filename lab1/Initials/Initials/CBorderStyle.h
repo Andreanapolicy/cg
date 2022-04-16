@@ -1,5 +1,5 @@
 #pragma once
-#include "../IBorderStyle/IBorderStyle.h"
+#include "./IBorderStyle.h"
 
 class CBorderStyle : public IBorderStyle
 {

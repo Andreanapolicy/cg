@@ -31,6 +31,7 @@ void CCanvas::DrawLine(PointD from, PointD to, Color borderColor, double thickne
 	m_renderTarget.draw(vertices, 4, sf::Quads);
 }
 
+
 void CCanvas::FillPolygon(const std::vector<PointD>& points, Color fillColor)
 {
 	sf::ConvexShape shape;
@@ -75,7 +76,7 @@ void CCanvas::DrawEllipseWithColor(PointD center, double widthRadius, double hei
 
 	circleShape.setOrigin((float)widthRadius, (float)widthRadius);
 	circleShape.move(sf::Vector2f((float)center.x, (float)m_renderTarget.getSize().y - (float)center.y));
-	circleShape.setScale(1.f, (float)heightRadius / (float)widthRadius);
+	circleShape.setScale(1, (float)heightRadius / (float)widthRadius);
 
 	circleShape.setOutlineColor(borderColor);
 	circleShape.setOutlineThickness((float)thickness);

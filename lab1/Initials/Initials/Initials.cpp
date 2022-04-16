@@ -8,8 +8,8 @@
 #include <SFML/Window/Event.hpp>
 #include <windows.h>
 
-std::shared_ptr<IShape> SetLetterD(Color color);
-std::shared_ptr<IShape> SetLetterA(Color color);
+std::shared_ptr<IShape> SetLetterD(Color color, PointD bias);
+std::shared_ptr<IShape> SetLetterA(Color color, PointD bias);
 std::shared_ptr<CSlide> CreateSlide();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
@@ -43,21 +43,21 @@ std::shared_ptr<CSlide> CreateSlide()
 {
 	auto slide = std::make_shared<CSlide>(800, 600);
 
-	slide->InsertShape(SetLetterD(0xabf5f2FF), 0);
-	//slide->InsertShape(SetLetterA(0xabf5f2FF), 0);
-	//slide->InsertShape(SetLetterA(0xabf5f2FF), 0);
+	slide->InsertShape(SetLetterD(0x14c3ccFF, { 0, 0 }), 0);
+	slide->InsertShape(SetLetterA(0x66afdcFF, { 0, 0 }), 0);
+	slide->InsertShape(SetLetterA(0x500286FF, { 70, 0 }), 0);
 	return slide;
 }
 
-std::shared_ptr<IShape> SetLetterD(Color color)
+std::shared_ptr<IShape> SetLetterD(Color color, PointD bias)
 {
-	auto firstPart = std::make_shared<CRectangle>(PointD{ 253, 305 }, 13, 100);
+	auto firstPart = std::make_shared<CRectangle>(PointD{ 253 + bias.x, 305 + bias.y }, 13, 100);
 	firstPart->GetFillStyle()->Enable();
 	firstPart->GetFillStyle()->SetColor(color);
 	firstPart->GetLineStyle()->Enable();
 	firstPart->GetLineStyle()->SetColor(0xFFFFFFFF);
 
-	auto secondPart = std::make_shared<CEllipse>(PointD{ 270, 245 }, 15, 55);
+	auto secondPart = std::make_shared<CEllipse>(PointD{ 270 + bias.x, 245 + bias.y }, 15, 55);
 	secondPart->GetFillStyle()->Enable();
 	secondPart->GetFillStyle()->SetColor(color);
 
@@ -68,30 +68,37 @@ std::shared_ptr<IShape> SetLetterD(Color color)
 	return letterD;
 }
 
-std::shared_ptr<IShape> SetLetterA(Color color)
+std::shared_ptr<IShape> SetLetterA(Color color, PointD bias)
 {
-	auto firstPart = std::make_shared<CRectangle>(PointD{ 270, 305 }, 26, 100);
+	auto firstPart = std::make_shared<CRectangle>(PointD{ 310 + bias.x, 305 + bias.y }, 6, 100);
 	firstPart->GetFillStyle()->Enable();
 	firstPart->GetFillStyle()->SetColor(color);
 	firstPart->GetLineStyle()->Enable();
 	firstPart->GetLineStyle()->SetColor(0xFFFFFFFF);
 
-	auto secondPart = std::make_shared<CRectangle>(PointD{ 296, 375 }, 100, 40);
+	auto secondPart = std::make_shared<CRectangle>(PointD{ 310 + bias.x, 305 + bias.y }, 40, 6);
 	secondPart->GetFillStyle()->Enable();
 	secondPart->GetFillStyle()->SetColor(color);
 	secondPart->GetLineStyle()->Enable();
 	secondPart->GetLineStyle()->SetColor(0xFFFFFFFF);
 
-	auto thirdPart = std::make_shared<CRectangle>(PointD{ 270, 305 }, 26, 100);
+	auto thirdPart = std::make_shared<CRectangle>(PointD{ 350 + bias.x, 305 + bias.y }, 6, 100);
 	thirdPart->GetFillStyle()->Enable();
 	thirdPart->GetFillStyle()->SetColor(color);
 	thirdPart->GetLineStyle()->Enable();
 	thirdPart->GetLineStyle()->SetColor(0xFFFFFFFF);
 
+	auto fourthPart = std::make_shared<CRectangle>(PointD{ 315 + bias.x, 335 + bias.y }, 40, 6);
+	fourthPart->GetFillStyle()->Enable();
+	fourthPart->GetFillStyle()->SetColor(color);
+	fourthPart->GetLineStyle()->Enable();
+	fourthPart->GetLineStyle()->SetColor(0xFFFFFFFF);
+
 	auto letterA = std::make_shared<CGroup>();
 	letterA->InsertShape(firstPart, 0);
 	letterA->InsertShape(secondPart, 1);
 	letterA->InsertShape(thirdPart, 2);
+	letterA->InsertShape(fourthPart, 3);
 
 	return letterA;
 }

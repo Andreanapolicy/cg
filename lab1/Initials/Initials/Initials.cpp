@@ -51,13 +51,13 @@ std::shared_ptr<CSlide> CreateSlide()
 
 std::shared_ptr<IShape> SetLetterD(Color color)
 {
-	auto firstPart = std::make_shared<CRectangle>(PointD{ 253, 305 }, 26, 100);
+	auto firstPart = std::make_shared<CRectangle>(PointD{ 253, 305 }, 13, 100);
 	firstPart->GetFillStyle()->Enable();
 	firstPart->GetFillStyle()->SetColor(color);
 	firstPart->GetLineStyle()->Enable();
 	firstPart->GetLineStyle()->SetColor(0xFFFFFFFF);
 
-	auto secondPart = std::make_shared<CEllipse>(PointD{ 273, 255 }, 15, 50);
+	auto secondPart = std::make_shared<CEllipse>(PointD{ 270, 245 }, 15, 55);
 	secondPart->GetFillStyle()->Enable();
 	secondPart->GetFillStyle()->SetColor(color);
 

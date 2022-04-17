@@ -125,8 +125,5 @@
     <ClInclude Include="CSlide.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="windowFunctions.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -181,7 +181,6 @@
     <ClInclude Include="ISlide.h" />
     <ClInclude Include="IStyle.h" />
     <ClInclude Include="Point.h" />
-    <ClInclude Include="windowFunctions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

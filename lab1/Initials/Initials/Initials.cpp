@@ -4,9 +4,13 @@
 #include "./CRectangle.h"
 #include "./CGroup.h"
 #include "./CEllipse.h"
-#include "./windowFunctions.h"
+#include "windows.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
+
+std::shared_ptr<IShape> SetLetterD(Color color, PointD bias);
+std::shared_ptr<IShape> SetLetterA(Color color, PointD bias);
+std::shared_ptr<CSlide> CreateSlide();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {

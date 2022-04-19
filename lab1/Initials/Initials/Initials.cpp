@@ -8,8 +8,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 
-std::shared_ptr<IShape> SetLetterD(Color color, PointD bias);
-std::shared_ptr<IShape> SetLetterA(Color color, PointD bias);
+std::shared_ptr<IShape> GetLetterD(Color color, PointD bias);
+std::shared_ptr<IShape> GetLetterA(Color color, PointD bias);
 std::shared_ptr<CSlide> CreateSlide();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
@@ -43,13 +43,13 @@ std::shared_ptr<CSlide> CreateSlide()
 {
 	auto slide = std::make_shared<CSlide>(800, 600);
 
-	slide->InsertShape(SetLetterD(0x14c3ccFF, { 0, 0 }), 0);
-	slide->InsertShape(SetLetterA(0x66afdcFF, { 0, 0 }), 0);
-	slide->InsertShape(SetLetterA(0x500286FF, { 70, 0 }), 0);
+	slide->InsertShape(GetLetterD(0x14c3ccFF, { 0, 0 }), 0);
+	slide->InsertShape(GetLetterA(0x66afdcFF, { 0, 0 }), 0);
+	slide->InsertShape(GetLetterA(0x500286FF, { 70, 0 }), 0);
 	return slide;
 }
 
-std::shared_ptr<IShape> SetLetterD(Color color, PointD bias)
+std::shared_ptr<IShape> GetLetterD(Color color, PointD bias)
 {
 	auto firstPart = std::make_shared<CRectangle>(PointD{ 253 + bias.x, 305 + bias.y }, 13, 100);
 	firstPart->GetFillStyle()->Enable();
@@ -68,7 +68,7 @@ std::shared_ptr<IShape> SetLetterD(Color color, PointD bias)
 	return letterD;
 }
 
-std::shared_ptr<IShape> SetLetterA(Color color, PointD bias)
+std::shared_ptr<IShape> GetLetterA(Color color, PointD bias)
 {
 	auto firstPart = std::make_shared<CRectangle>(PointD{ 310 + bias.x, 305 + bias.y }, 6, 100);
 	firstPart->GetFillStyle()->Enable();

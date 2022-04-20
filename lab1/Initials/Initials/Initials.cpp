@@ -12,14 +12,34 @@ std::shared_ptr<IShape> GetLetterD(Color color, PointD bias);
 std::shared_ptr<IShape> GetLetterA(Color color, PointD bias);
 std::shared_ptr<CSlide> CreateSlide();
 
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+bool RegisterWndClass(HINSTANCE hInstance);
+HWND CreateMainWindow(HINSTANCE hInstance);
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
+	if (!RegisterWndClass(hInstance))
+	{
+		return 1;
+	}
+
+	// Создаем главное окно приложения
+	HWND hMainWindow = CreateMainWindow(hInstance);
+	if (hMainWindow == NULL)
+	{
+		return 1;
+	}
+
+	// Показываем главное окно приложения
+	ShowWindow(hMainWindow, nCmdShow);
+	UpdateWindow(hMainWindow);
+
 	auto slide = CreateSlide();
 
 	auto width = (unsigned int)slide->GetWidth();
 	auto height = (unsigned int)slide->GetHeight();
 
-	sf::RenderWindow renderWindow(sf::VideoMode(width, height), "Result");
+	sf::RenderWindow renderWindow(hMainWindow);
 	CCanvas canvas(renderWindow);
 
 	while (renderWindow.isOpen())
@@ -101,4 +121,60 @@ std::shared_ptr<IShape> GetLetterA(Color color, PointD bias)
 	letterA->InsertShape(fourthPart, 3);
 
 	return letterA;
+}
+
+HWND CreateMainWindow(HINSTANCE hInstance)
+{
+	HWND hMainWindow = CreateWindowEx(
+		0, // DWORD dwExStyle;
+		L"Initials class",
+		L"Initials",
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		nullptr,
+		NULL,
+		hInstance,
+		NULL
+	);
+
+	return hMainWindow;
+}
+
+LRESULT CALLBACK WindowProc(
+	HWND hwnd,
+	UINT uMsg,
+	WPARAM wParam,
+	LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_DESTROY:
+		// Помещаем сообщение WM_QUIT в очередь сообщений текущего потока
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+	return 0;
+}
+
+bool RegisterWndClass(HINSTANCE hInstance)
+{
+	WNDCLASSEX wndClass = {
+		sizeof(wndClass), // UINT cbSize;
+		CS_HREDRAW | CS_VREDRAW, // UINT style;
+		&WindowProc, // WNDPROC lpfnWndProc;
+		0, // int cbClsExtra;
+		0, // int cbWndExtra;
+		hInstance, // HINSTANCE hInstance;
+		NULL, // HICON hIcon;
+		LoadCursor(NULL, IDC_ARROW), // HCURSOR hCursor;
+		reinterpret_cast<HBRUSH>(COLOR_WINDOW), // HBRUSH hbrBackground;
+		NULL, // LPCTSTR lpszMenuName;
+		L"Initials class",
+		NULL, // HICON hIconSm;
+	};
+
+	return RegisterClassEx(&wndClass) != FALSE;
 }

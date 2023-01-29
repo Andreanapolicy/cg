@@ -2,12 +2,20 @@
 #include <windowsx.h>
 #include <tchar.h>
 
+struct Point
+{
+	int x = 0;
+	int y = 0;
+};
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool RegisterWndClass(HINSTANCE hInstance);
 HWND CreateMainWindow(HINSTANCE hInstance);
 void OnDestroy(HWND hwnd);
 void OnPaint(HWND hwnd);
 int MainLoop();
+void PaintLetterD(HDC dc, const Point& point);
+void PaintLetterA(HDC dc, const Point& point);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
@@ -96,7 +104,9 @@ void OnPaint(HWND hwnd)
 {
 	PAINTSTRUCT ps;
 	HDC dc = BeginPaint(hwnd, &ps);
-	Ellipse(dc, 100, 50, 250, 150);
+	PaintLetterD(dc, { 100, 100 });
+	PaintLetterA(dc, { 200, 100 });
+	PaintLetterA(dc, { 300, 100 });
 	EndPaint(hwnd, &ps);
 }
 
@@ -116,4 +126,50 @@ int MainLoop()
 	}
 
 	return message.wParam;
+}
+
+void PaintLetterD(HDC dc, const Point& point)
+{
+	HPEN pen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0)); 
+
+	LOGBRUSH brushInfo; 
+
+	brushInfo.lbStyle = BS_SOLID; 
+	brushInfo.lbColor = RGB(255, 255, 0); 
+	brushInfo.lbHatch = 0; 
+
+	HBRUSH brush = CreateBrushIndirect(&brushInfo); 
+	HPEN oldPen = SelectPen(dc, pen); 
+
+	HBRUSH oldBrush = SelectBrush(dc, brush); 
+	
+	Rectangle(dc, 100 + point.x, 50 + point.y, 110 + point.x, 100 + point.y);
+	Rectangle(dc, 110 + point.x, 50 + point.y, 150 + point.x, 60 + point.y);
+	Rectangle(dc, 150 + point.x, 50 + point.y, 160 + point.x, 100 + point.y);
+	Rectangle(dc, 90 + point.x, 100 + point.y, 170 + point.x, 110 + point.y);
+
+	Rectangle(dc, 90 + point.x, 100 + point.y, 100 + point.x, 140 + point.y);
+	Rectangle(dc, 160 + point.x, 100 + point.y, 170 + point.x, 140 + point.y);
+
+
+}
+
+void PaintLetterA(HDC dc, const Point& point)
+{
+	HPEN pen = CreatePen(PS_SOLID, 2, RGB(0, 0, 0)); 
+
+	LOGBRUSH brushInfo; 
+
+	brushInfo.lbStyle = BS_SOLID; 
+	brushInfo.lbColor = RGB(255, 0, 255);
+	brushInfo.lbHatch = 0; 
+
+	HBRUSH brush = CreateBrushIndirect(&brushInfo); 
+	HPEN oldPen = SelectPen(dc, pen); 
+
+	HBRUSH oldBrush = SelectBrush(dc, brush); 
+	Rectangle(dc, 100 + point.x, 50 + point.y, 110 + point.x, 160 + point.y);
+	Rectangle(dc, 110 + point.x, 50 + point.y, 150 + point.x, 60 + point.y);
+	Rectangle(dc, 150 + point.x, 50 + point.y, 160 + point.x, 160 + point.y);
+	Rectangle(dc, 100 + point.x, 100 + point.y, 160 + point.x, 110 + point.y);
 }

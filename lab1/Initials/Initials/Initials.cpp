@@ -7,6 +7,7 @@ bool RegisterWndClass(HINSTANCE hInstance);
 HWND CreateMainWindow(HINSTANCE hInstance);
 void OnDestroy(HWND hwnd);
 void OnPaint(HWND hwnd);
+int MainLoop();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
@@ -26,7 +27,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine,
 	ShowWindow(hMainWindow, nCmdShow);
 	UpdateWindow(hMainWindow);
 
-	return 0;
+	return MainLoop();
 }
 
 HWND CreateMainWindow(HINSTANCE hInstance)
@@ -97,4 +98,22 @@ void OnPaint(HWND hwnd)
 	HDC dc = BeginPaint(hwnd, &ps);
 	Ellipse(dc, 100, 50, 250, 150);
 	EndPaint(hwnd, &ps);
+}
+
+int MainLoop()
+{
+	MSG message;
+	BOOL result;
+	while ((result = GetMessage(&message, NULL, 0, 0)) != 0)
+	{
+		if (result == -1)
+		{
+			break;
+		}
+		
+		TranslateMessage(&message);
+		DispatchMessage(&message);
+	}
+
+	return message.wParam;
 }

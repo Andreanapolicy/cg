@@ -1,20 +1,12 @@
-﻿#include "./CSlide.h"
-#include "./Ccanvas.h"
-#include "./Color.h"
-#include "./CRectangle.h"
-#include "./CGroup.h"
-#include "./CEllipse.h"
-#include "windows.h"
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/Event.hpp>
-
-std::shared_ptr<IShape> GetLetterD(Color color, PointD bias);
-std::shared_ptr<IShape> GetLetterA(Color color, PointD bias);
-std::shared_ptr<CSlide> CreateSlide();
+﻿#include <windows.h>
+#include <windowsx.h>
+#include <tchar.h>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool RegisterWndClass(HINSTANCE hInstance);
 HWND CreateMainWindow(HINSTANCE hInstance);
+void OnDestroy(HWND hwnd);
+void OnPaint(HWND hwnd);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
@@ -34,93 +26,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine,
 	ShowWindow(hMainWindow, nCmdShow);
 	UpdateWindow(hMainWindow);
 
-	auto slide = CreateSlide();
-
-	auto width = (unsigned int)slide->GetWidth();
-	auto height = (unsigned int)slide->GetHeight();
-
-	sf::RenderWindow renderWindow(hMainWindow);
-	CCanvas canvas(renderWindow);
-
-	while (renderWindow.isOpen())
-	{
-		sf::Event event;
-		while (renderWindow.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				renderWindow.close();
-		}
-
-		renderWindow.clear();
-		slide->Draw(canvas);
-		renderWindow.display();
-	}
-
 	return 0;
-}
-
-std::shared_ptr<CSlide> CreateSlide()
-{
-	auto slide = std::make_shared<CSlide>(800, 600);
-
-	slide->InsertShape(GetLetterD(0x14c3ccFF, { 0, 0 }), 0);
-	slide->InsertShape(GetLetterA(0x66afdcFF, { 0, 0 }), 0);
-	slide->InsertShape(GetLetterA(0x500286FF, { 70, 0 }), 0);
-	return slide;
-}
-
-std::shared_ptr<IShape> GetLetterD(Color color, PointD bias)
-{
-	auto firstPart = std::make_shared<CRectangle>(PointD{ 253 + bias.x, 305 + bias.y }, 13, 100);
-	firstPart->GetFillStyle()->Enable();
-	firstPart->GetFillStyle()->SetColor(color);
-	firstPart->GetLineStyle()->Enable();
-	firstPart->GetLineStyle()->SetColor(0xFFFFFFFF);
-
-	auto secondPart = std::make_shared<CEllipse>(PointD{ 270 + bias.x, 245 + bias.y }, 15, 55);
-	secondPart->GetFillStyle()->Enable();
-	secondPart->GetFillStyle()->SetColor(color);
-
-	auto letterD = std::make_shared<CGroup>();
-	letterD->InsertShape(firstPart, 0);
-	letterD->InsertShape(secondPart, 1);
-
-	return letterD;
-}
-
-std::shared_ptr<IShape> GetLetterA(Color color, PointD bias)
-{
-	auto firstPart = std::make_shared<CRectangle>(PointD{ 310 + bias.x, 305 + bias.y }, 6, 100);
-	firstPart->GetFillStyle()->Enable();
-	firstPart->GetFillStyle()->SetColor(color);
-	firstPart->GetLineStyle()->Enable();
-	firstPart->GetLineStyle()->SetColor(0xFFFFFFFF);
-
-	auto secondPart = std::make_shared<CRectangle>(PointD{ 310 + bias.x, 305 + bias.y }, 40, 6);
-	secondPart->GetFillStyle()->Enable();
-	secondPart->GetFillStyle()->SetColor(color);
-	secondPart->GetLineStyle()->Enable();
-	secondPart->GetLineStyle()->SetColor(0xFFFFFFFF);
-
-	auto thirdPart = std::make_shared<CRectangle>(PointD{ 350 + bias.x, 305 + bias.y }, 6, 100);
-	thirdPart->GetFillStyle()->Enable();
-	thirdPart->GetFillStyle()->SetColor(color);
-	thirdPart->GetLineStyle()->Enable();
-	thirdPart->GetLineStyle()->SetColor(0xFFFFFFFF);
-
-	auto fourthPart = std::make_shared<CRectangle>(PointD{ 315 + bias.x, 335 + bias.y }, 40, 6);
-	fourthPart->GetFillStyle()->Enable();
-	fourthPart->GetFillStyle()->SetColor(color);
-	fourthPart->GetLineStyle()->Enable();
-	fourthPart->GetLineStyle()->SetColor(0xFFFFFFFF);
-
-	auto letterA = std::make_shared<CGroup>();
-	letterA->InsertShape(firstPart, 0);
-	letterA->InsertShape(secondPart, 1);
-	letterA->InsertShape(thirdPart, 2);
-	letterA->InsertShape(fourthPart, 3);
-
-	return letterA;
 }
 
 HWND CreateMainWindow(HINSTANCE hInstance)
@@ -149,15 +55,16 @@ LRESULT CALLBACK WindowProc(
 {
 	switch (uMsg)
 	{
-	case WM_DESTROY:
-		// Помещаем сообщение WM_QUIT в очередь сообщений текущего потока
-		PostQuitMessage(0);
-		break;
+		HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
+		HANDLE_MSG(hwnd, WM_PAINT, OnPaint);
 	default:
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 	return 0;
 }
+// GDI / GDI+
+// использовать матрицу для отрисовки букв(задаем матрицу для сдвига букв перед рисованием, тем самым мы можем управлять положением буквы не изменяя положения в коде) 
+// какие событие обрабатывает SFML
 
 bool RegisterWndClass(HINSTANCE hInstance)
 {
@@ -177,4 +84,17 @@ bool RegisterWndClass(HINSTANCE hInstance)
 	};
 
 	return RegisterClassEx(&wndClass) != FALSE;
+}
+
+void OnDestroy(HWND /*hwnd*/)
+{
+	PostQuitMessage(0);
+}
+
+void OnPaint(HWND hwnd)
+{
+	PAINTSTRUCT ps;
+	HDC dc = BeginPaint(hwnd, &ps);
+	Ellipse(dc, 100, 50, 250, 150);
+	EndPaint(hwnd, &ps);
 }

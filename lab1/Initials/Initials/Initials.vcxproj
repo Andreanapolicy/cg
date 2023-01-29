@@ -143,44 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CBorderGroupStyle.cpp" />
-    <ClCompile Include="CBorderStyle.cpp" />
-    <ClCompile Include="CCanvas.cpp" />
-    <ClCompile Include="CEllipse.cpp" />
-    <ClCompile Include="CFillGroupStyle.cpp" />
-    <ClCompile Include="CFillStyle.cpp" />
-    <ClCompile Include="CGroup.cpp" />
-    <ClCompile Include="CRectangle.cpp" />
-    <ClCompile Include="CShape.cpp" />
-    <ClCompile Include="CSlide.cpp" />
-    <ClCompile Include="ICanvas.cpp" />
     <ClCompile Include="Initials.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="CBorderGroupStyle.h" />
-    <ClInclude Include="CBorderStyle.h" />
-    <ClInclude Include="CCanvas.h" />
-    <ClInclude Include="CEllipse.h" />
-    <ClInclude Include="CEmptyShapeException.h" />
-    <ClInclude Include="CFillGroupStyle.h" />
-    <ClInclude Include="CFillStyle.h" />
-    <ClInclude Include="CGroup.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="CRectangle.h" />
-    <ClInclude Include="CShape.h" />
-    <ClInclude Include="CSlide.h" />
-    <ClInclude Include="CStyleNotExistException.h" />
-    <ClInclude Include="CWrongShapeException.h" />
-    <ClInclude Include="CWrongShapeIndexException.h" />
-    <ClInclude Include="Frame.h" />
-    <ClInclude Include="IBorderStyle.h" />
-    <ClInclude Include="ICanvas.h" />
-    <ClInclude Include="IDrawable.h" />
-    <ClInclude Include="IGroup.h" />
-    <ClInclude Include="IShape.h" />
-    <ClInclude Include="ISlide.h" />
-    <ClInclude Include="IStyle.h" />
-    <ClInclude Include="Point.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -42,13 +42,21 @@ private:
 		ANIMATION_TIMER_ID = 1
 	}; 
 
+	struct LetterDynamicInfo
+	{
+		double acceleration = 0;
+		double speed = 0;
+		int offset = 0;
+		int start = 0;
+		DWORD lastTick = 0;
+	};
+
 	void PaintLetterD(CPaintDC& dc, const Point& point);
 	void PaintLetterA(CPaintDC& dc, const Point& point);
 	void Animate();
+	void CalculateOffset(LetterDynamicInfo& letterDynamicInfo);
 
-	DWORD m_lastTick;
-	int m_speed = 0;
-	int m_offset = 0;
-	int m_startPointDraw = 0;
-	double m_acceleration = 0.5;
+	LetterDynamicInfo m_firstInfo = {1};
+	LetterDynamicInfo m_secondInfo = {2};
+	LetterDynamicInfo m_thirdInfo = {3};
 };

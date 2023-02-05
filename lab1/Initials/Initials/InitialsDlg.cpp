@@ -64,20 +64,27 @@ void CInitialsDlg::OnPaint()
 
 	// Выбираем их в контекст устройства 
 	CBrush* pOldBrush = dc.SelectObject(&brushFirst);
-	PaintLetterD(dc, { 50, m_startPointDraw + m_offset });
+	CalculateOffset(m_firstInfo);
+	PaintLetterD(dc, { 50, m_firstInfo.start + m_firstInfo.offset });
 	
 	pOldBrush = dc.SelectObject(&brushSecond);
-	PaintLetterA(dc, { 150, m_startPointDraw + m_offset });
+	CalculateOffset(m_secondInfo);
+	PaintLetterA(dc, { 150, m_secondInfo.start + m_secondInfo.offset });
 	
 	pOldBrush = dc.SelectObject(&brushThird);
-	PaintLetterA(dc, { 250, m_startPointDraw + m_offset });
-
+	CalculateOffset(m_thirdInfo);
+	PaintLetterA(dc, { 250, m_thirdInfo.start + m_thirdInfo.offset });
+	
 	dc.SelectObject(pOldBrush);
 }
 
 int CInitialsDlg::OnCreate(LPCREATESTRUCT createdStruct)
 {
-	m_lastTick = GetTickCount();
+	auto lastTick = GetTickCount();
+	m_firstInfo.lastTick = lastTick;
+	m_secondInfo.lastTick = lastTick;
+	m_thirdInfo.lastTick = lastTick;
+	
 	SetTimer(ANIMATION_TIMER_ID, 1, NULL);
 	return 0;
 }
@@ -124,22 +131,24 @@ void CInitialsDlg::PaintLetterA(CPaintDC& dc, const Point& point)
 
 void CInitialsDlg::Animate()
 {
-	auto currentTick = GetTickCount();
-	if (m_offset >= 140 || m_offset <= -140)
-	{
-		m_lastTick = currentTick;
-		m_acceleration *= -1;
-		m_speed = 0;
-		m_startPointDraw = m_offset < 0 ? 0 : m_offset;
-	}
-	
-	auto delta = (currentTick - m_lastTick) * 0.001;
-
-	m_speed += m_acceleration * delta;
-	m_offset = m_speed * delta / 2;
-
-
 	Invalidate();
 	UpdateWindow();
+}
+
+void CInitialsDlg::CalculateOffset(LetterDynamicInfo& letterDynamicInfo)
+{
+	auto currentTick = GetTickCount();
+	if (letterDynamicInfo.offset >= 140 || letterDynamicInfo.offset <= -140)
+	{
+		letterDynamicInfo.lastTick = currentTick;
+		letterDynamicInfo.acceleration *= -1;
+		letterDynamicInfo.speed = 0;
+		letterDynamicInfo.start = letterDynamicInfo.offset < 0 ? 0 : letterDynamicInfo.offset;
+	}
+
+	auto delta = (currentTick - letterDynamicInfo.lastTick) * 0.001;
+
+	letterDynamicInfo.speed += letterDynamicInfo.acceleration * delta;
+	letterDynamicInfo.offset = letterDynamicInfo.speed * delta / 2;
 }
 

@@ -3,7 +3,9 @@
 //
 
 #pragma once
-
+#include "Point.h"
+#include <memory>
+#include "TruckDrawing.h"
 
 // CTruckDlg dialog
 class CTruckDlg : public CDialogEx
@@ -30,4 +32,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+private:
+	std::unique_ptr<TruckDrawing> m_truckDrawing;
 };

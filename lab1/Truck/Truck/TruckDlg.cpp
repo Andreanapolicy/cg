@@ -15,12 +15,11 @@
 
 // CTruckDlg dialog
 
-
-
 CTruckDlg::CTruckDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TRUCK_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_truckDrawing = std::make_unique<TruckDrawing>();
 }
 
 void CTruckDlg::DoDataExchange(CDataExchange* pDX)
@@ -56,27 +55,8 @@ BOOL CTruckDlg::OnInitDialog()
 
 void CTruckDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialogEx::OnPaint();
-	}
+	CPaintDC dc(this); // device context for painting
+	m_truckDrawing->Draw(dc, {100, 100});
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
@@ -85,4 +65,3 @@ HCURSOR CTruckDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
-

@@ -56,7 +56,7 @@ BOOL CTruckDlg::OnInitDialog()
 void CTruckDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	m_truckDrawing->Draw(dc, {100, 100});
+	m_truckDrawing->Draw(dc, {});
 }
 
 // The system calls this function to obtain the cursor to display while the user drags

@@ -12,6 +12,6 @@ public:
 private:
 	void DrawCabin(CPaintDC& dc, const Point& point);
 	void DrawSemitrailer(CPaintDC& dc, const Point& point);
-	void DrawWheel(CPaintDC& dc, const Point& point);
+	void DrawWheel(CPaintDC& dc, const Point& point, int radius);
 
 };

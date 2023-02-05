@@ -6,12 +6,8 @@ void TruckDrawing::Draw(CPaintDC& dc, const Point& point)
 	CBrush brushFirst(RGB(0, 255, 0));
 	CBrush brushThird(RGB(0, 0, 255));
 
-	DrawCabin(dc, {});
-	DrawSemitrailer(dc, {});
-	DrawWheel(dc, {});
-	DrawWheel(dc, {});
-	DrawWheel(dc, {});
-	DrawWheel(dc, {});
+	DrawCabin(dc, point);
+	DrawSemitrailer(dc, point);
 
 
 	// Выбираем их в контекст устройства
@@ -35,14 +31,37 @@ void TruckDrawing::DrawCabin(CPaintDC& dc, const Point& point)
 	CBrush doorKnobBrush(RGB(0, 0, 0));
 	pOldBrush = dc.SelectObject(&doorKnobBrush);
 	dc.Rectangle(90 + point.x, 105 + point.y, 100 + point.x, 110 + point.y);
-	
+
+	CBrush platformBrush(RGB(137, 137, 137));
+	pOldBrush = dc.SelectObject(&platformBrush);
+	dc.Rectangle(120 + point.x, 130 + point.y, 340 + point.x, 150 + point.y);
+
+	DrawWheel(dc, {point.x + 80, point.y + 140}, 20);
+	DrawWheel(dc, {point.x + 200, point.y + 140}, 20);
+
 	dc.SelectObject(pOldBrush);
 }
 
 void TruckDrawing::DrawSemitrailer(CPaintDC& dc, const Point& point)
 {
+	CBrush semitrailerBrush(RGB(234, 209, 220));
+
+	auto pOldBrush = dc.SelectObject(&semitrailerBrush);
+	dc.Rectangle(120 + point.x, 20 + point.y, 420 + point.x, 130 + point.y);
+	DrawWheel(dc, { point.x + 350, point.y + 130 }, 25);
+
+	dc.SelectObject(pOldBrush);
 }
 
-void TruckDrawing::DrawWheel(CPaintDC& dc, const Point& point)
+void TruckDrawing::DrawWheel(CPaintDC& dc, const Point& point, int radius)
 {
+	CBrush tireBrush(RGB(81, 81, 81));
+	auto pOldBrush = dc.SelectObject(&tireBrush);
+	dc.Ellipse(0 + point.x, 0 + point.y, radius * 2 + point.x, radius * 2 + point.y);
+
+	CBrush disksBrush(RGB(237, 237, 237));
+	pOldBrush = dc.SelectObject(&disksBrush);
+	dc.Ellipse(radius / 2 + point.x, radius / 2 + point.y, radius * 3 / 2 + point.x, radius * 3 / 2 + point.y);
+
+	dc.SelectObject(pOldBrush);
 }

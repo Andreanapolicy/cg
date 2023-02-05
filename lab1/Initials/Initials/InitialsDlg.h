@@ -6,6 +6,7 @@
 
 #include "Point.h"
 
+
 // CInitialsDlg dialog
 class CInitialsDlg : public CDialogEx
 {
@@ -29,10 +30,23 @@ protected:
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
+	afx_msg void OnDestroy();
+	afx_msg int OnCreate(LPCREATESTRUCT createdStruct);
+	afx_msg void OnTimer(UINT_PTR ptr);
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 
 private:
+	enum
+	{
+		ANIMATION_TIMER_ID = 1
+	}; 
+
 	void PaintLetterD(CPaintDC& dc, const Point& point);
 	void PaintLetterA(CPaintDC& dc, const Point& point);
+	void Animate();
+
+	DWORD m_lastTick;
+	int m_speed = 0;
+	int m_acceleration = 1;
 };

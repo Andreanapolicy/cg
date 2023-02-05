@@ -25,6 +25,9 @@ void CInitialsDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CInitialsDlg, CDialogEx)
 	ON_WM_PAINT()
+	ON_WM_CREATE()
+	ON_WM_TIMER()
+	ON_WM_DESTROY()
 	ON_WM_QUERYDRAGICON()
 END_MESSAGE_MAP()
 
@@ -62,12 +65,34 @@ void CInitialsDlg::OnPaint()
 	CPen* pOldPen = dc.SelectObject(&pen);
 	CBrush* pOldBrush = dc.SelectObject(&brush);
 
-	PaintLetterD(dc, { 50, 50 });
-	PaintLetterA(dc, { 150, 50 });
-	PaintLetterA(dc, { 250, 50 });
+	PaintLetterD(dc, { 50, 50 + m_speed });
+	PaintLetterA(dc, { 150, 50 + m_speed });
+	PaintLetterA(dc, { 250, 50 + m_speed });
 
 	dc.SelectObject(pOldPen);
 	dc.SelectObject(pOldBrush);
+}
+
+int CInitialsDlg::OnCreate(LPCREATESTRUCT createdStruct)
+{
+	m_lastTick = GetTickCount();
+	SetTimer(ANIMATION_TIMER_ID, 20, NULL);
+	return 0;
+}
+
+void CInitialsDlg::OnDestroy()
+{
+	KillTimer(ANIMATION_TIMER_ID);
+}
+
+void CInitialsDlg::OnTimer(UINT_PTR ptr)
+{
+	switch(ptr)
+	{
+	case ANIMATION_TIMER_ID:
+		Animate();
+		break;
+	}
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
@@ -93,5 +118,13 @@ void CInitialsDlg::PaintLetterA(CPaintDC& dc, const Point& point)
 	dc.Rectangle(110 + point.x, 50 + point.y, 150 + point.x, 60 + point.y);
 	dc.Rectangle(150 + point.x, 50 + point.y, 160 + point.x, 160 + point.y);
 	dc.Rectangle(100 + point.x, 100 + point.y, 160 + point.x, 110 + point.y);
+}
+
+void CInitialsDlg::Animate()
+{
+	m_speed += m_acceleration;
+
+	Invalidate();
+	UpdateWindow();
 }
 

@@ -48,5 +48,7 @@ private:
 
 	DWORD m_lastTick;
 	int m_speed = 0;
-	int m_acceleration = 1;
+	int m_offset = 0;
+	int m_startPointDraw = 0;
+	double m_acceleration = 0.5;
 };

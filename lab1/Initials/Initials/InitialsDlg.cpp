@@ -58,25 +58,27 @@ void CInitialsDlg::OnPaint()
 
 	// создаем перо и кисть с использованием классов библиотеки MFC 
 
-	CPen pen(PS_SOLID, 2, RGB(255, 0, 0));
-	CBrush brush(RGB(255, 255, 0));
+	CBrush brushFirst(RGB(0, 255, 0));
+	CBrush brushSecond(RGB(255, 0, 0));
+	CBrush brushThird(RGB(0, 0, 255));
 
 	// Выбираем их в контекст устройства 
-	CPen* pOldPen = dc.SelectObject(&pen);
-	CBrush* pOldBrush = dc.SelectObject(&brush);
+	CBrush* pOldBrush = dc.SelectObject(&brushFirst);
+	PaintLetterD(dc, { 50, m_startPointDraw + m_offset });
+	
+	pOldBrush = dc.SelectObject(&brushSecond);
+	PaintLetterA(dc, { 150, m_startPointDraw + m_offset });
+	
+	pOldBrush = dc.SelectObject(&brushThird);
+	PaintLetterA(dc, { 250, m_startPointDraw + m_offset });
 
-	PaintLetterD(dc, { 50, 50 + m_speed });
-	PaintLetterA(dc, { 150, 50 + m_speed });
-	PaintLetterA(dc, { 250, 50 + m_speed });
-
-	dc.SelectObject(pOldPen);
 	dc.SelectObject(pOldBrush);
 }
 
 int CInitialsDlg::OnCreate(LPCREATESTRUCT createdStruct)
 {
 	m_lastTick = GetTickCount();
-	SetTimer(ANIMATION_TIMER_ID, 20, NULL);
+	SetTimer(ANIMATION_TIMER_ID, 1, NULL);
 	return 0;
 }
 
@@ -122,7 +124,20 @@ void CInitialsDlg::PaintLetterA(CPaintDC& dc, const Point& point)
 
 void CInitialsDlg::Animate()
 {
-	m_speed += m_acceleration;
+	auto currentTick = GetTickCount();
+	if (m_offset >= 140 || m_offset <= -140)
+	{
+		m_lastTick = currentTick;
+		m_acceleration *= -1;
+		m_speed = 0;
+		m_startPointDraw = m_offset < 0 ? 0 : m_offset;
+	}
+	
+	auto delta = (currentTick - m_lastTick) * 0.001;
+
+	m_speed += m_acceleration * delta;
+	m_offset = m_speed * delta / 2;
+
 
 	Invalidate();
 	UpdateWindow();

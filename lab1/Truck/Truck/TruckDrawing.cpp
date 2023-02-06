@@ -6,8 +6,8 @@ void TruckDrawing::Draw(CPaintDC& dc, const Point& point)
 	CBrush brushFirst(RGB(0, 255, 0));
 	CBrush brushThird(RGB(0, 0, 255));
 
-	DrawCabin(dc, point);
 	DrawSemitrailer(dc, point);
+	DrawCabin(dc, point);
 
 
 	// Выбираем их в контекст устройства
@@ -36,8 +36,8 @@ void TruckDrawing::DrawCabin(CPaintDC& dc, const Point& point)
 	pOldBrush = dc.SelectObject(&platformBrush);
 	dc.Rectangle(120 + point.x, 130 + point.y, 340 + point.x, 150 + point.y);
 
-	DrawWheel(dc, {point.x + 80, point.y + 140}, 20);
-	DrawWheel(dc, {point.x + 200, point.y + 140}, 20);
+	DrawWheel(dc, {point.x + 80, point.y + 120}, 30);
+	DrawWheel(dc, {point.x + 200, point.y + 120}, 30);
 
 	dc.SelectObject(pOldBrush);
 }
@@ -48,7 +48,7 @@ void TruckDrawing::DrawSemitrailer(CPaintDC& dc, const Point& point)
 
 	auto pOldBrush = dc.SelectObject(&semitrailerBrush);
 	dc.Rectangle(120 + point.x, 20 + point.y, 420 + point.x, 130 + point.y);
-	DrawWheel(dc, { point.x + 350, point.y + 130 }, 25);
+	DrawWheel(dc, { point.x + 350, point.y + 120 }, 30);
 
 	dc.SelectObject(pOldBrush);
 }

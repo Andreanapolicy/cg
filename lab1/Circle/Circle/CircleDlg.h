@@ -3,7 +3,8 @@
 //
 
 #pragma once
-
+#include "CircleView.h"
+#include <memory>
 
 // CCircleDlg dialog
 class CCircleDlg : public CDialogEx
@@ -32,5 +33,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	void DrawCircle(CPaintDC& dc, int centerX, int centerY, int radius);
+	std::unique_ptr<CircleView> m_circle;
 };

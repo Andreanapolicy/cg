@@ -9,8 +9,6 @@ void TruckDrawing::Draw(CPaintDC& dc, const Point& point)
 	DrawSemitrailer(dc, point);
 	DrawCabin(dc, point);
 
-
-	// Выбираем их в контекст устройства
 	CBrush* pOldBrush = dc.SelectObject(&brushFirst);
 
 	dc.SelectObject(pOldBrush);

@@ -44,27 +44,9 @@ BOOL CCircleDlg::OnInitDialog()
 
 void CCircleDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
+	CPaintDC dc(this); // device context for painting
 
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialogEx::OnPaint();
-	}
+	DrawCircle(dc, 100, 100, 50);
 }
 
 HCURSOR CCircleDlg::OnQueryDragIcon()
@@ -72,3 +54,56 @@ HCURSOR CCircleDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CCircleDlg::DrawCircle(CPaintDC& dc, int centerX, int centerY, int radius)
+{
+	for (auto index = radius; index > 0; index -= 1)
+	{
+		int x1, y1, yk = 0;
+		int sigma, delta, f;
+		delta = 2 * (1 - index);
+		y1 = index;
+		x1 = 0;
+
+		do
+		{
+			dc.SetPixel(centerX + x1, centerY + y1, RGB(150, 150, 150));
+			dc.SetPixel(centerX - x1, centerY + y1, RGB(2, 3, 4));
+			dc.SetPixel(centerX + x1, centerY - y1, RGB(2, 3, 4));
+			dc.SetPixel(centerX - x1, centerY - y1, RGB(2, 3, 4));
+
+			f = 0;
+			if (y1 < yk)
+			{
+				break;
+			}
+			if (delta < 0)
+			{
+				sigma = 2 * (delta + y1) - 1;
+
+				if (sigma <= 0)
+				{
+					x1++;
+					delta += 2 * x1 + 1;
+					f = 1;
+				}
+			}
+			else if (delta > 0)
+			{
+				sigma = 2 * (delta - x1) - 1;
+				if (sigma > 0)
+				{
+					y1--;
+					delta += 1 - 2 * y1;
+					f = 1;
+				}
+			}
+			if (!f)
+			{
+				x1++;
+				y1--;
+				delta += 2 * (x1 - y1 - 1);
+			}
+
+		} while (1);
+	}
+}

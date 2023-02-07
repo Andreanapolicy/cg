@@ -1,6 +1,16 @@
 #include "pch.h"
 #include "CircleView.h"
 
+void CircleView::SetWidth(int width)
+{
+	m_width = width;
+}
+
+void CircleView::SetHeight(int height)
+{
+	m_height = height;
+}
+
 void CircleView::Draw(CPaintDC& dc, int centerX, int centerY, int radius, COLORREF borderColor, COLORREF fillColor)
 {
 	DrawBorder(dc, centerX, centerY, radius, borderColor);
@@ -9,6 +19,11 @@ void CircleView::Draw(CPaintDC& dc, int centerX, int centerY, int radius, COLORR
 	{
 		DrawBorder(dc, centerX, centerY, newRadius, fillColor);
 	}
+}
+
+bool CircleView::InContainer(int x, int y) const
+{
+	return y <= m_height && y >= 0 && x <= m_width && x >= 0;
 }
 
 void CircleView::DrawBorder(CPaintDC& dc, int centerX, int centerY, int radius, COLORREF borderColor)
@@ -22,10 +37,10 @@ void CircleView::DrawBorder(CPaintDC& dc, int centerX, int centerY, int radius, 
 
 	do
 	{
-		dc.SetPixel(centerX + x1, centerY + y1, borderColor);
-		dc.SetPixel(centerX - x1, centerY + y1, borderColor);
-		dc.SetPixel(centerX + x1, centerY - y1, borderColor);
-		dc.SetPixel(centerX - x1, centerY - y1, borderColor);
+		InContainer(centerX + x1, centerY + y1) && dc.SetPixel(centerX + x1, centerY + y1, borderColor);
+		InContainer(centerX - x1, centerY + y1) && dc.SetPixel(centerX - x1, centerY + y1, borderColor);
+		InContainer(centerX + x1, centerY - y1) && dc.SetPixel(centerX + x1, centerY - y1, borderColor);
+		InContainer(centerX - x1, centerY - y1) && dc.SetPixel(centerX - x1, centerY - y1, borderColor);
 
 		f = 0;
 		if (y1 < yk)

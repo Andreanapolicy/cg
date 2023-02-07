@@ -16,6 +16,7 @@ CCircleDlg::CCircleDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CIRCLE_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
 	m_circle = std::make_unique<CircleView>();
 }
 
@@ -46,8 +47,12 @@ BOOL CCircleDlg::OnInitDialog()
 void CCircleDlg::OnPaint()
 {
 	CPaintDC dc(this);
+	CRect rect;
+	this->GetWindowRect(&rect);
+	m_circle->SetWidth(rect.Width());
+	m_circle->SetHeight(rect.Height());
 
-	m_circle->Draw(dc, 100, 100, 50, RGB(30, 50, 200), RGB(200, 150, 60));
+	m_circle->Draw(dc, 100, 100, 200, RGB(30, 50, 200), RGB(200, 150, 60));
 }
 
 HCURSOR CCircleDlg::OnQueryDragIcon()

@@ -6,6 +6,7 @@ void TruckDrawing::Draw(CPaintDC& dc, const Point& point)
 	CBrush brushFirst(RGB(0, 255, 0));
 	CBrush brushThird(RGB(0, 0, 255));
 
+	DrawRoad(dc, point);
 	DrawSemitrailer(dc, point);
 	DrawCabin(dc, point);
 
@@ -35,7 +36,7 @@ void TruckDrawing::DrawCabin(CPaintDC& dc, const Point& point)
 	dc.Rectangle(120 + point.x, 130 + point.y, 340 + point.x, 150 + point.y);
 
 	DrawWheel(dc, {point.x + 80, point.y + 120}, 30);
-	DrawWheel(dc, {point.x + 200, point.y + 120}, 30);
+	DrawWheel(dc, {point.x + 270, point.y + 120}, 30);
 
 	dc.SelectObject(pOldBrush);
 }
@@ -60,6 +61,31 @@ void TruckDrawing::DrawWheel(CPaintDC& dc, const Point& point, int radius)
 	CBrush disksBrush(RGB(237, 237, 237));
 	pOldBrush = dc.SelectObject(&disksBrush);
 	dc.Ellipse(radius / 2 + point.x, radius / 2 + point.y, radius * 3 / 2 + point.x, radius * 3 / 2 + point.y);
+
+	dc.SelectObject(pOldBrush);
+}
+
+void TruckDrawing::DrawRoad(CPaintDC& dc, const Point& point)
+{
+	CBrush roadBrush(RGB(44, 44, 44));
+
+	auto pOldBrush = dc.SelectObject(&roadBrush);
+	dc.Rectangle(0 + point.x, 140 + point.y, 520 + point.x, 240 + point.y);
+
+	CBrush roadMarkingsBrush(RGB(240, 221, 71));
+	pOldBrush = dc.SelectObject(&roadMarkingsBrush);
+
+	int roadMarkingCount = 15;
+	for (auto index = 0; index < roadMarkingCount; index++)
+	{
+		CPoint points[4];
+		int offset = 40 * index;
+		points[0] = { 10 + offset, 185 };
+		points[1] = { 40 + offset, 185 };
+		points[2] = { 30 + offset, 190 };
+		points[3] = { 0 + offset, 190 };
+		dc.Polygon(points, 4);
+	}
 
 	dc.SelectObject(pOldBrush);
 }

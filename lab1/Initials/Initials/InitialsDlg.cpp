@@ -113,20 +113,20 @@ HCURSOR CInitialsDlg::OnQueryDragIcon()
 
 void CInitialsDlg::PaintLetterD(CPaintDC& dc, const Point& point)
 {
-	dc.Rectangle(100 + point.x, 50 + point.y, 110 + point.x, 100 + point.y);
-	dc.Rectangle(110 + point.x, 50 + point.y, 150 + point.x, 60 + point.y);
-	dc.Rectangle(150 + point.x, 50 + point.y, 160 + point.x, 100 + point.y);
-	dc.Rectangle(90 + point.x, 100 + point.y, 170 + point.x, 110 + point.y);
-	dc.Rectangle(90 + point.x, 100 + point.y, 100 + point.x, 140 + point.y);
-	dc.Rectangle(160 + point.x, 100 + point.y, 170 + point.x, 140 + point.y);
+	dc.Rectangle(100 + point.x, 10 + point.y, 110 + point.x, 60 + point.y);
+	dc.Rectangle(110 + point.x, 10 + point.y, 150 + point.x, 20 + point.y);
+	dc.Rectangle(150 + point.x, 10 + point.y, 160 + point.x, 60 + point.y);
+	dc.Rectangle(90 + point.x, 60 + point.y, 170 + point.x, 70 + point.y);
+	dc.Rectangle(90 + point.x, 60 + point.y, 100 + point.x, 100 + point.y);
+	dc.Rectangle(160 + point.x, 60 + point.y, 170 + point.x, 100 + point.y);
 }
 
 void CInitialsDlg::PaintLetterA(CPaintDC& dc, const Point& point)
 {
-	dc.Rectangle(100 + point.x, 50 + point.y, 110 + point.x, 160 + point.y);
-	dc.Rectangle(110 + point.x, 50 + point.y, 150 + point.x, 60 + point.y);
-	dc.Rectangle(150 + point.x, 50 + point.y, 160 + point.x, 160 + point.y);
-	dc.Rectangle(100 + point.x, 100 + point.y, 160 + point.x, 110 + point.y);
+	dc.Rectangle(100 + point.x, 10 + point.y, 110 + point.x, 120 + point.y);
+	dc.Rectangle(110 + point.x, 10 + point.y, 150 + point.x, 20 + point.y);
+	dc.Rectangle(150 + point.x, 10 + point.y, 160 + point.x, 120 + point.y);
+	dc.Rectangle(100 + point.x, 60 + point.y, 160 + point.x, 70 + point.y);
 }
 
 void CInitialsDlg::Animate()

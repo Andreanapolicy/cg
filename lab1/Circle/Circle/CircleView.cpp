@@ -28,52 +28,38 @@ bool CircleView::InContainer(int x, int y) const
 
 void CircleView::DrawBorder(CPaintDC& dc, int centerX, int centerY, int radius, COLORREF borderColor)
 {
-	int x1 = 0;
-	int y1 = radius;
-	int yk = 0;
-	int sigma = 0;
-	int delta = 2 * (1 - radius);
-	int f = 0;
-
-	do
+	int x = 0;
+	int y = radius;
+	int delta = 1 - 2 * radius;
+	int error = 0;
+	while (y >= x)
 	{
-		InContainer(centerX + x1, centerY + y1) && dc.SetPixel(centerX + x1, centerY + y1, borderColor);
-		InContainer(centerX - x1, centerY + y1) && dc.SetPixel(centerX - x1, centerY + y1, borderColor);
-		InContainer(centerX + x1, centerY - y1) && dc.SetPixel(centerX + x1, centerY - y1, borderColor);
-		InContainer(centerX - x1, centerY - y1) && dc.SetPixel(centerX - x1, centerY - y1, borderColor);
+		InContainer(centerX + x, centerY + y) && dc.SetPixel(centerX + x, centerY + y, borderColor);
+		InContainer(centerX + x, centerY - y) && dc.SetPixel(centerX + x, centerY - y, borderColor);
+		InContainer(centerX - x, centerY + y) && dc.SetPixel(centerX - x, centerY + y, borderColor);
+		InContainer(centerX - x, centerY - y) && dc.SetPixel(centerX - x, centerY - y, borderColor);
+		InContainer(centerX + y, centerY + x) && dc.SetPixel(centerX + y, centerY + x, borderColor);
+		InContainer(centerX + y, centerY - x) && dc.SetPixel(centerX + y, centerY - x, borderColor);
+		InContainer(centerX - y, centerY + x) && dc.SetPixel(centerX - y, centerY + x, borderColor);
+		InContainer(centerX - y, centerY - x) && dc.SetPixel(centerX - y, centerY - x, borderColor);
 
-		f = 0;
-		if (y1 < yk)
-		{
-			break;
-		}
-		if (delta < 0)
-		{
-			sigma = 2 * (delta + y1) - 1;
+		error = 2 * (delta + y) - 1;
 
-			if (sigma <= 0)
-			{
-				x1++;
-				delta += 2 * x1 + 1;
-				f = 1;
-			}
-		}
-		else if (delta > 0)
+		if (delta < 0 && error <= 0)
 		{
-			sigma = 2 * (delta - x1) - 1;
-			if (sigma > 0)
-			{
-				y1--;
-				delta += 1 - 2 * y1;
-				f = 1;
-			}
+			x++;
+			delta += 2 * x + 1;
+			continue;
 		}
-		if (!f)
+		if ((delta > 0) && (error > 0))
 		{
-			x1++;
-			y1--;
-			delta += 2 * (x1 - y1 - 1);
+			y--;
+			delta -= 2 * y + 1;
+			continue;
 		}
-
-	} while (1);
+		x++;
+		y--;
+		delta += 2 * (x - y);
+	}
+		
 }

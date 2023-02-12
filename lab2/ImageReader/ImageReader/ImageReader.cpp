@@ -93,6 +93,20 @@ BOOL CImageReaderApp::InitInstance()
 	return TRUE;
 }
 
+void CImageReaderApp::OnFileOpen()
+{
+	LPCTSTR pszFilter = _T("PNG (*.png)|*.png|")
+						_T("JPG (*.jpg)|*.jpg|")
+						_T("JPEG (*.jpeg)|*.jpeg|")
+						_T("BMP (*.bmp)|*.bmp|");
+	CFileDialog dialogFile(TRUE, NULL, NULL, OFN_HIDEREADONLY || OFN_FILEMUSTEXIST, pszFilter, AfxGetMainWnd());
+
+	if (IDOK == dialogFile.DoModal())
+	{
+		auto fileName = dialogFile.GetPathName();
+	}
+}
+
 // CImageReaderApp message handlers
 
 

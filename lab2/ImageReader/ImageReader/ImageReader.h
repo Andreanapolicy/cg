@@ -23,6 +23,7 @@ public:
 // Overrides
 public:
 	virtual BOOL InitInstance();
+	afx_msg void OnFileOpen();
 
 // Implementation
 	UINT  m_nAppLook;

@@ -18,20 +18,13 @@
 #define new DEBUG_NEW
 #endif
 
-// CImageReaderDoc
-
 IMPLEMENT_DYNCREATE(CImageReaderDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CImageReaderDoc, CDocument)
 END_MESSAGE_MAP()
 
-
-// CImageReaderDoc construction/destruction
-
 CImageReaderDoc::CImageReaderDoc() noexcept
 {
-	// TODO: add one-time construction code here
-
 }
 
 CImageReaderDoc::~CImageReaderDoc()
@@ -41,16 +34,15 @@ CImageReaderDoc::~CImageReaderDoc()
 BOOL CImageReaderDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
+	{
 		return FALSE;
+	}
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
 
 	return TRUE;
 }
-
-
-
 
 // CImageReaderDoc serialization
 
@@ -77,7 +69,7 @@ void CImageReaderDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	CString strText = _T("TODO: implement thumbnail drawing here");
 	LOGFONT lf;
 
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
 	pDefaultGUIFont->GetLogFont(&lf);
 	lf.lfHeight = 36;
 
@@ -108,7 +100,7 @@ void CImageReaderDoc::SetSearchContent(const CString& value)
 	}
 	else
 	{
-		CMFCFilterChunkValueImpl *pChunk = nullptr;
+		CMFCFilterChunkValueImpl* pChunk = nullptr;
 		ATLTRY(pChunk = new CMFCFilterChunkValueImpl);
 		if (pChunk != nullptr)
 		{
@@ -133,6 +125,5 @@ void CImageReaderDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
-
 
 // CImageReaderDoc commands

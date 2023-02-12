@@ -16,14 +16,10 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CImageReaderApp
-
 BEGIN_MESSAGE_MAP(CImageReaderApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CImageReaderApp::OnAppAbout)
-	// Standard file based document commands
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
+	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
 END_MESSAGE_MAP()
 
 
@@ -31,21 +27,10 @@ END_MESSAGE_MAP()
 
 CImageReaderApp::CImageReaderApp() noexcept
 {
-
-	// TODO: replace application ID string below with unique ID string; recommended
-	// format for string is CompanyName.ProductName.SubProduct.VersionInformation
 	SetAppID(_T("ImageReader.AppID.NoVersion"));
-
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
 }
 
-// The one and only CImageReaderApp object
-
 CImageReaderApp theApp;
-
-
-// CImageReaderApp initialization
 
 BOOL CImageReaderApp::InitInstance()
 {

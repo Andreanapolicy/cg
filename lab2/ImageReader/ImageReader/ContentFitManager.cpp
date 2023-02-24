@@ -22,31 +22,49 @@ void ContentFitManager::CalculateContentBounds(int boundWidth, int boundHeight)
 	int x = (double)(windowWidth - contentWidth) / 2.0;
 	int y = (double)(windowHeight - contentHeight) / 2.0;
 
-	if (windowWidth < m_originalWidth && windowHeight >= m_originalHeight)
-	{
-		contentWidth = windowWidth;
-		contentHeight = contentWidth / m_coef;
-		x = 0;
-	}
-	else if (windowHeight < m_originalHeight && windowWidth >= m_originalWidth)
-	{
+	auto CalculateRelativeToHeight = [this, &contentHeight, &contentWidth, &windowHeight, &y]() {
 		contentHeight = windowHeight;
 		contentWidth = contentHeight * m_coef;
 		y = 0;
+	};
+
+	auto CalculateRelativeToWidth = [this, &contentHeight, &contentWidth, &windowWidth, &x]() {
+		contentWidth = windowWidth;
+		contentHeight = contentWidth / m_coef;
+		x = 0;
+	};
+
+	if (windowWidth < m_originalWidth && windowHeight >= m_originalHeight)
+	{
+		CalculateRelativeToWidth();
+	}
+	else if (windowHeight < m_originalHeight && windowWidth >= m_originalWidth)
+	{
+		CalculateRelativeToHeight();
 	}
 	else if (windowWidth < m_originalWidth && windowHeight < m_originalHeight)
 	{
 		if (min(windowWidth, windowHeight) == windowWidth)
 		{
-			contentWidth = windowWidth;
-			contentHeight = contentWidth / m_coef;
-			x = 0;
+			if (contentWidth / m_coef <= windowHeight)
+			{
+				CalculateRelativeToWidth();
+			}
+			else
+			{
+				CalculateRelativeToHeight();
+			}
 		}
 		else
 		{
-			contentHeight = windowHeight;
-			contentWidth = contentHeight * m_coef;
-			y = 0;
+			if (windowHeight * m_coef > windowWidth)
+			{
+				CalculateRelativeToWidth();
+			}
+			else
+			{
+				CalculateRelativeToHeight();
+			}
 		}
 	}
 	else if (windowWidth >= m_originalWidth && windowHeight >= m_originalHeight)

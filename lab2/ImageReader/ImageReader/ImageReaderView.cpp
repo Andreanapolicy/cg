@@ -18,14 +18,13 @@
 IMPLEMENT_DYNCREATE(CImageReaderView, CView)
 
 BEGIN_MESSAGE_MAP(CImageReaderView, CView)
+	ON_COMMAND(ID_FILE_OPEN, &CImageReaderView::OnFileOpen)
 END_MESSAGE_MAP()
 
 // CImageReaderView construction/destruction
 
 CImageReaderView::CImageReaderView() noexcept
 {
-	// TODO: add construction code here
-
 }
 
 CImageReaderView::~CImageReaderView()
@@ -49,17 +48,12 @@ void CImageReaderView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
-	auto imagePath = pDoc->GetImage();
-	if (imagePath.GetLength() == 0)
+	if (m_pBitmap == nullptr)
 	{
 		return;
 	}
-	Gdiplus::Image image(imagePath);
-	auto pImage = std::make_shared<Gdiplus::Bitmap>(image.GetWidth(), image.GetHeight());
 	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
-
-	Gdiplus::Pen pen(Gdiplus::Color(255, 0, 255, 128), 5.0);
-	graphics.DrawRectangle(&pen, 10, 10, 200, 150);
+	graphics.DrawImage(m_pBitmap.get(), 0, 0);
 }
 
 
@@ -74,6 +68,27 @@ void CImageReaderView::AssertValid() const
 void CImageReaderView::Dump(CDumpContext& dc) const
 {
 	CView::Dump(dc);
+}
+
+void CImageReaderView::OnFileOpen()
+{
+	LPCTSTR pszFilter = _T("PNG (*.png)|*.png|")
+						_T("JPG (*.jpg)|*.jpg|")
+						_T("JPEG (*.jpeg)|*.jpeg|")
+						_T("BMP (*.bmp)|*.bmp|");
+	CFileDialog dialogFile(TRUE, NULL, NULL, OFN_HIDEREADONLY || OFN_FILEMUSTEXIST, pszFilter, AfxGetMainWnd());
+
+	if (IDOK == dialogFile.DoModal())
+	{
+		auto fileName = dialogFile.GetPathName();
+		Gdiplus::Image image(fileName);
+
+		m_pBitmap = std::make_shared<Gdiplus::Bitmap>(fileName);
+		
+		Invalidate();
+		UpdateWindow();
+
+	}
 }
 
 CImageReaderDoc* CImageReaderView::GetDocument() const // non-debug version is inline

@@ -3,6 +3,9 @@
 //
 
 #pragma once
+#include <memory>
+#include "gdiplus.h"
+#include "GdiplusInitializer.h"
 
 class CImageReaderView : public CView
 {
@@ -38,6 +41,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnFileOpen();
+
+private:
+	CGdiplusInitializer m_gdiplusInitializer;
+	std::shared_ptr<Gdiplus::Bitmap> m_pBitmap;
 };
 
 #ifndef _DEBUG  // debug version in ImageReaderView.cpp

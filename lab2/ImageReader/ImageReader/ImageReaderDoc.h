@@ -4,9 +4,6 @@
 
 
 #pragma once
-#include <gdiplus.h>
-#include <memory>
-
 
 class CImageReaderDoc : public CDocument
 {
@@ -16,9 +13,6 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	void SetImage(const CString& imagePath);
-	CString GetImage();
-
 // Operations
 public:
 
@@ -49,7 +43,4 @@ protected:
 	// Helper function that sets search content for a Search Handler
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
-
-private:
-	CString m_pImage;
 };

@@ -27,18 +27,6 @@ CImageReaderDoc::CImageReaderDoc() noexcept
 {
 }
 
-void CImageReaderDoc::SetImage(const CString& imagePath)
-{
-	m_pImage = imagePath;
-
-	UpdateAllViews(NULL);
-}
-
-CString CImageReaderDoc::GetImage()
-{
-	return m_pImage;
-}
-
 CImageReaderDoc::~CImageReaderDoc()
 {
 }

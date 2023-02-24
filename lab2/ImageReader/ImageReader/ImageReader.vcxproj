@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GdiplusInitializer.h" />
     <ClInclude Include="ImageReader.h" />
     <ClInclude Include="ImageReaderDoc.h" />
     <ClInclude Include="ImageReaderView.h" />

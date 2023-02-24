@@ -106,5 +106,5 @@ void CImageReaderView::Draw(CDC* pDC)
 	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
 	int testW = m_pBitmap->GetWidth();
 	int testH = m_pBitmap->GetHeight();
-	graphics.DrawImage(m_pBitmap.get(), (size.Width() - testW) / 2, (size.Height() - testH) / 2, testW, testH);
+	graphics.DrawImage(m_pBitmap.get(), (size.Width() - testW) / 2, (size.Height() - testH - 60) / 2, testW, testH);
 }

@@ -13,11 +13,6 @@
 #include "ImageReaderDoc.h"
 #include "ImageReaderView.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 // CImageReaderView
 
 IMPLEMENT_DYNCREATE(CImageReaderView, CView)
@@ -47,14 +42,24 @@ BOOL CImageReaderView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CImageReaderView drawing
 
-void CImageReaderView::OnDraw(CDC* /*pDC*/)
+void CImageReaderView::OnDraw(CDC* pDC)
 {
 	CImageReaderDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	// TODO: add draw code for native data here
+	auto imagePath = pDoc->GetImage();
+	if (imagePath.GetLength() == 0)
+	{
+		return;
+	}
+	Gdiplus::Image image(imagePath);
+	auto pImage = std::make_shared<Gdiplus::Bitmap>(image.GetWidth(), image.GetHeight());
+	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
+
+	Gdiplus::Pen pen(Gdiplus::Color(255, 0, 255, 128), 5.0);
+	graphics.DrawRectangle(&pen, 10, 10, 200, 150);
 }
 
 
@@ -77,6 +82,3 @@ CImageReaderDoc* CImageReaderView::GetDocument() const // non-debug version is i
 	return (CImageReaderDoc*)m_pDocument;
 }
 #endif //_DEBUG
-
-
-// CImageReaderView message handlers

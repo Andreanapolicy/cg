@@ -12,10 +12,6 @@
 #include "ImageReaderDoc.h"
 #include "ImageReaderView.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 BEGIN_MESSAGE_MAP(CImageReaderApp, CWinApp)
 	ON_COMMAND(ID_APP_ABOUT, &CImageReaderApp::OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, &CWinApp::OnFileNew)
@@ -65,16 +61,14 @@ BOOL CImageReaderApp::InitInstance()
 
 	// Register the application's document templates.  Document templates
 	//  serve as the connection between documents, frame windows and views
-	CSingleDocTemplate* pDocTemplate;
-	pDocTemplate = new CSingleDocTemplate(
+	m_pDocTemplate = new CSingleDocTemplate(
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(CImageReaderDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
 		RUNTIME_CLASS(CImageReaderView));
-	if (!pDocTemplate)
+	if (!m_pDocTemplate)
 		return FALSE;
-	AddDocTemplate(pDocTemplate);
-
+	AddDocTemplate(m_pDocTemplate);
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
@@ -95,16 +89,14 @@ BOOL CImageReaderApp::InitInstance()
 
 void CImageReaderApp::OnFileOpen()
 {
-	LPCTSTR pszFilter = _T("PNG (*.png)|*.png|")
-						_T("JPG (*.jpg)|*.jpg|")
-						_T("JPEG (*.jpeg)|*.jpeg|")
-						_T("BMP (*.bmp)|*.bmp|");
-	CFileDialog dialogFile(TRUE, NULL, NULL, OFN_HIDEREADONLY || OFN_FILEMUSTEXIST, pszFilter, AfxGetMainWnd());
-
-	if (IDOK == dialogFile.DoModal())
-	{
-		auto fileName = dialogFile.GetPathName();
-	}
+	/*
+		в ресурсах можно указать, какой класс будет обрабатывать ивент.
+		winapp только инициализирует приложение
+		mainframe - основная обработка сообщений
+		view - отображение. Должен дергать bitmap, а не создавать ее
+		document - содержание данных
+		
+	*/
 }
 
 // CImageReaderApp message handlers

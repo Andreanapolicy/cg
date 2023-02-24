@@ -7,6 +7,7 @@
 #include "ImageReader.h"
 
 #include "MainFrm.h"
+#include "ImageReaderDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,6 +20,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
+	ON_COMMAND(ID_FILE_OPEN, &CMainFrame::OnFileOpen)
 END_MESSAGE_MAP()
 
 // CMainFrame construction/destruction
@@ -136,3 +138,17 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(theApp.m_nAppLook == pCmdUI->m_nID);
 }
 
+void CMainFrame::OnFileOpen()
+{
+	LPCTSTR pszFilter = _T("PNG (*.png)|*.png|")
+						_T("JPG (*.jpg)|*.jpg|")
+						_T("JPEG (*.jpeg)|*.jpeg|")
+						_T("BMP (*.bmp)|*.bmp|");
+	CFileDialog dialogFile(TRUE, NULL, NULL, OFN_HIDEREADONLY || OFN_FILEMUSTEXIST, pszFilter, AfxGetMainWnd());
+
+	if (IDOK == dialogFile.DoModal())
+	{
+		auto fileName = dialogFile.GetPathName();
+		dynamic_cast<CImageReaderDoc*>(GetActiveDocument())->SetImage(fileName);
+	}
+}

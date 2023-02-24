@@ -4,7 +4,6 @@
 
 #pragma once
 
-
 class CImageReaderView : public CView
 {
 protected: // create from serialization only
@@ -37,6 +36,8 @@ protected:
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnFileOpen();
 };
 
 #ifndef _DEBUG  // debug version in ImageReaderView.cpp

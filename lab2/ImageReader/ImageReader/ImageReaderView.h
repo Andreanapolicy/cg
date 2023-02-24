@@ -43,6 +43,8 @@ public:
 	afx_msg void OnFileOpen();
 
 private:
+	void Draw(CDC* pDC);
+
 	CGdiplusInitializer m_gdiplusInitializer;
 	std::shared_ptr<Gdiplus::Bitmap> m_pBitmap;
 };

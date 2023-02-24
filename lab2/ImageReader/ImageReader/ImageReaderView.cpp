@@ -48,12 +48,7 @@ void CImageReaderView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
-	if (m_pBitmap == nullptr)
-	{
-		return;
-	}
-	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
-	graphics.DrawImage(m_pBitmap.get(), 0, 0);
+	Draw(pDC);
 }
 
 
@@ -97,3 +92,19 @@ CImageReaderDoc* CImageReaderView::GetDocument() const // non-debug version is i
 	return (CImageReaderDoc*)m_pDocument;
 }
 #endif //_DEBUG
+
+void CImageReaderView::Draw(CDC* pDC)
+{
+	if (m_pBitmap == nullptr)
+	{
+		return;
+	}
+	auto parent = this->GetParent();
+	CRect size;
+	parent->GetWindowRect(&size);
+
+	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
+	int testW = m_pBitmap->GetWidth();
+	int testH = m_pBitmap->GetHeight();
+	graphics.DrawImage(m_pBitmap.get(), (size.Width() - testW) / 2, (size.Height() - testH) / 2, testW, testH);
+}

@@ -56,13 +56,13 @@ void CInitialsDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting 
 
-	// создаем перо и кисть с использованием классов библиотеки MFC 
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ MFC 
 
 	CBrush brushFirst(RGB(0, 255, 0));
 	CBrush brushSecond(RGB(255, 0, 0));
 	CBrush brushThird(RGB(0, 0, 255));
 
-	// Выбираем их в контекст устройства 
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 	CBrush* pOldBrush = dc.SelectObject(&brushFirst);
 	CalculateOffset(m_firstInfo);
 	PaintLetterD(dc, { 50, m_firstInfo.start + m_firstInfo.offset });
@@ -137,8 +137,10 @@ void CInitialsDlg::Animate()
 
 void CInitialsDlg::CalculateOffset(LetterDynamicInfo& letterDynamicInfo)
 {
+	const auto borderOffset = 140;
+
 	auto currentTick = GetTickCount();
-	if (letterDynamicInfo.offset >= 140 || letterDynamicInfo.offset <= -140)
+	if (letterDynamicInfo.offset >= borderOffset || letterDynamicInfo.offset <= -borderOffset)
 	{
 		letterDynamicInfo.lastTick = currentTick;
 		letterDynamicInfo.acceleration *= -1;

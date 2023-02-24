@@ -99,12 +99,45 @@ void CImageReaderView::Draw(CDC* pDC)
 	{
 		return;
 	}
-	auto parent = this->GetParent();
-	CRect size;
-	parent->GetWindowRect(&size);
-
+	
+	auto bound = GetContentBound();
 	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
-	int testW = m_pBitmap->GetWidth();
-	int testH = m_pBitmap->GetHeight();
-	graphics.DrawImage(m_pBitmap.get(), (size.Width() - testW) / 2, (size.Height() - testH - 60) / 2, testW, testH);
+	
+	graphics.DrawImage(m_pBitmap.get(), bound.X, bound.Y, bound.Width, bound.Height);
+}
+
+Gdiplus::Rect CImageReaderView::GetContentBound() const
+{
+	CRect size;
+	GetClientRect(&size);
+	int windowWidth = size.Width();
+	int windowHeight = size.Height();
+
+	int contentWidth = m_pBitmap->GetWidth();
+	int contentHeight = m_pBitmap->GetHeight();
+
+	double coef = (double)contentWidth / (double)contentHeight;
+	int x = (double)(windowWidth - contentWidth) / 2.0;
+	int y = (double)(windowHeight - contentHeight) / 2.0;
+	int width;
+	int height;
+
+	if (windowWidth < contentWidth && windowHeight >= contentHeight)
+	{
+		contentWidth = windowWidth;
+		contentHeight = contentWidth / coef;
+		x = 0;
+	}
+	else if (windowHeight < contentHeight && windowWidth >= contentWidth)
+	{
+		contentHeight = windowHeight;
+		contentWidth = contentHeight * coef;
+		y = 0;
+	}
+	else
+	{
+	
+	}
+
+	return { 0, 0, contentWidth, contentHeight };
 }

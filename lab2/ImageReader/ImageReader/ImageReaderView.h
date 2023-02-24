@@ -43,6 +43,7 @@ public:
 	afx_msg void OnFileOpen();
 
 private:
+	Gdiplus::Rect CImageReaderView::GetContentBound() const;
 	void Draw(CDC* pDC);
 
 	CGdiplusInitializer m_gdiplusInitializer;

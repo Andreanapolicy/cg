@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ContentFitManager.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GdiplusInitializer.h" />
     <ClInclude Include="ImageReader.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ContentFitManager.cpp" />
     <ClCompile Include="ImageReader.cpp" />
     <ClCompile Include="ImageReaderDoc.cpp" />
     <ClCompile Include="ImageReaderView.cpp" />

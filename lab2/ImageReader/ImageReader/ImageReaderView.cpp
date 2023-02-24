@@ -79,10 +79,10 @@ void CImageReaderView::OnFileOpen()
 		Gdiplus::Image image(fileName);
 
 		m_pBitmap = std::make_shared<Gdiplus::Bitmap>(fileName);
-		
+		m_contentFitManager.SetContentSize(m_pBitmap->GetWidth(), m_pBitmap->GetHeight());
+
 		Invalidate();
 		UpdateWindow();
-
 	}
 }
 
@@ -106,38 +106,12 @@ void CImageReaderView::Draw(CDC* pDC)
 	graphics.DrawImage(m_pBitmap.get(), bound.X, bound.Y, bound.Width, bound.Height);
 }
 
-Gdiplus::Rect CImageReaderView::GetContentBound() const
+Gdiplus::Rect CImageReaderView::GetContentBound()
 {
 	CRect size;
 	GetClientRect(&size);
-	int windowWidth = size.Width();
-	int windowHeight = size.Height();
-
-	int contentWidth = m_pBitmap->GetWidth();
-	int contentHeight = m_pBitmap->GetHeight();
-
-	double coef = (double)contentWidth / (double)contentHeight;
-	int x = (double)(windowWidth - contentWidth) / 2.0;
-	int y = (double)(windowHeight - contentHeight) / 2.0;
-	int width;
-	int height;
-
-	if (windowWidth < contentWidth && windowHeight >= contentHeight)
-	{
-		contentWidth = windowWidth;
-		contentHeight = contentWidth / coef;
-		x = 0;
-	}
-	else if (windowHeight < contentHeight && windowWidth >= contentWidth)
-	{
-		contentHeight = windowHeight;
-		contentWidth = contentHeight * coef;
-		y = 0;
-	}
-	else
-	{
+	m_contentFitManager.CalculateContentBounds(size.Width(), size.Height());
+	auto bounds = m_contentFitManager.GetContentBounds();
 	
-	}
-
-	return { 0, 0, contentWidth, contentHeight };
+	return { bounds.x, bounds.y, bounds.width, bounds.height };
 }

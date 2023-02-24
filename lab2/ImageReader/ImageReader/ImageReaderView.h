@@ -6,6 +6,7 @@
 #include <memory>
 #include "gdiplus.h"
 #include "GdiplusInitializer.h"
+#include "ContentFitManager.h"
 
 class CImageReaderView : public CView
 {
@@ -43,11 +44,12 @@ public:
 	afx_msg void OnFileOpen();
 
 private:
-	Gdiplus::Rect CImageReaderView::GetContentBound() const;
+	Gdiplus::Rect CImageReaderView::GetContentBound();
 	void Draw(CDC* pDC);
 
 	CGdiplusInitializer m_gdiplusInitializer;
 	std::shared_ptr<Gdiplus::Bitmap> m_pBitmap;
+	ContentFitManager m_contentFitManager;
 };
 
 #ifndef _DEBUG  // debug version in ImageReaderView.cpp

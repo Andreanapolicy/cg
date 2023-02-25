@@ -42,6 +42,7 @@ IMPLEMENT_DYNCREATE(CImageReaderView, CView)
 BEGIN_MESSAGE_MAP(CImageReaderView, CView)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
 	ON_WM_ERASEBKGND()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 CImageReaderView::CImageReaderView() noexcept
@@ -103,6 +104,24 @@ void CImageReaderView::OnFileOpen()
 BOOL CImageReaderView::OnEraseBkgnd(CDC* pDC)
 {
 	return 0;
+}
+
+void CImageReaderView::OnSize(UINT nType, int cx, int cy)
+{
+	CRect rcClient;
+
+	GetClientRect(&rcClient);
+
+	unsigned clientWidth = rcClient.Width();
+	unsigned clientHeight = rcClient.Height();
+
+	if (!m_pBackBuffer.get() ||
+		(clientWidth > m_pBackBuffer->GetWidth()) ||
+		(clientHeight > m_pBackBuffer->GetHeight())
+	)
+	{
+		m_pBackBuffer.reset(new Gdiplus::Bitmap(clientWidth, clientHeight));
+	} 
 }
 
 CImageReaderDoc* CImageReaderView::GetDocument() const // non-debug version is inline

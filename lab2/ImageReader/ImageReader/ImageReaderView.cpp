@@ -40,7 +40,8 @@ void DrawBackground(Gdiplus::Graphics& graphics, const Gdiplus::Rect& bound)
 IMPLEMENT_DYNCREATE(CImageReaderView, CView)
 
 BEGIN_MESSAGE_MAP(CImageReaderView, CView)
-	ON_COMMAND(ID_FILE_OPEN, &CImageReaderView::OnFileOpen)
+	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 CImageReaderView::CImageReaderView() noexcept
@@ -92,10 +93,16 @@ void CImageReaderView::OnFileOpen()
 
 		m_pBitmap = std::make_shared<Gdiplus::Bitmap>(fileName);
 		m_contentFitManager.SetContentSize(m_pBitmap->GetWidth(), m_pBitmap->GetHeight());
-
+		m_pBackBuffer = std::make_shared<Gdiplus::Bitmap>(m_pBitmap->GetWidth(), m_pBitmap->GetHeight()); 
+		
 		Invalidate();
 		UpdateWindow();
 	}
+}
+
+BOOL CImageReaderView::OnEraseBkgnd(CDC* pDC)
+{
+	return 0;
 }
 
 CImageReaderDoc* CImageReaderView::GetDocument() const // non-debug version is inline
@@ -107,14 +114,21 @@ CImageReaderDoc* CImageReaderView::GetDocument() const // non-debug version is i
 
 void CImageReaderView::Draw(CDC* pDC)
 {
-	if (m_pBitmap == nullptr)
+	RedrawBackBuffer();
+	if (m_pBackBuffer.get())
 	{
-		return;
+		Gdiplus::Graphics graphics(pDC->GetSafeHdc());
+		graphics.DrawImage(m_pBackBuffer.get(), 0, 0);
 	}
-	
+}
+
+void CImageReaderView::RedrawBackBuffer()
+{
+	Gdiplus::Graphics graphics(m_pBackBuffer.get());
+
+	graphics.Clear(Gdiplus::Color::White);
 	auto bound = GetContentBound();
-	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
-	
+
 	DrawBackground(graphics, bound);
 	graphics.DrawImage(m_pBitmap.get(), bound.X, bound.Y, bound.Width, bound.Height);
 }

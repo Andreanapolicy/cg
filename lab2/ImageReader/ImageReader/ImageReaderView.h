@@ -42,13 +42,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnFileOpen();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
 private:
 	Gdiplus::Rect CImageReaderView::GetContentBound();
 	void Draw(CDC* pDC);
+	void RedrawBackBuffer();
 
 	CGdiplusInitializer m_gdiplusInitializer;
 	std::shared_ptr<Gdiplus::Bitmap> m_pBitmap;
+	std::shared_ptr<Gdiplus::Bitmap> m_pBackBuffer;
 	ContentFitManager m_contentFitManager;
 };
 

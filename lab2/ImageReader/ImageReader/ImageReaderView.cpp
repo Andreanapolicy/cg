@@ -1,11 +1,5 @@
-
-// ImageReaderView.cpp : implementation of the CImageReaderView class
-//
-
 #include "pch.h"
 #include "framework.h"
-// SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
-// and search filter handlers and allows sharing of document code with that project.
 #ifndef SHARED_HANDLERS
 #include "ImageReader.h"
 #endif
@@ -13,15 +7,41 @@
 #include "ImageReaderDoc.h"
 #include "ImageReaderView.h"
 
-// CImageReaderView
+namespace
+{
+void DrawBackground(Gdiplus::Graphics& graphics, const Gdiplus::Rect& bound)
+{
+	Gdiplus::SolidBrush firstPen(Gdiplus::Color::AliceBlue);
+	Gdiplus::SolidBrush secondPen(Gdiplus::Color::LightCoral);
+
+	for (int posY = bound.Y; posY <= bound.Height + bound.Y; posY += 20)
+	{
+		for (int posX = bound.X; posX <= bound.Width + bound.X; posX += 20)
+		{
+			int width = 20;
+			int height = 20;
+			
+			if (bound.Width + bound.X - posX < width)
+			{
+				width = bound.Width + bound.X - posX;
+			}
+			if (bound.Height + bound.Y - posY < height)
+			{
+				height = bound.Height + bound.Y - posY;
+			}
+
+			graphics.FillRectangle(((posX + posY) / 20 % 2 == 0) ? &firstPen : &secondPen, posX, posY, width, height);
+		}
+	}
+}
+}
+
 
 IMPLEMENT_DYNCREATE(CImageReaderView, CView)
 
 BEGIN_MESSAGE_MAP(CImageReaderView, CView)
 	ON_COMMAND(ID_FILE_OPEN, &CImageReaderView::OnFileOpen)
 END_MESSAGE_MAP()
-
-// CImageReaderView construction/destruction
 
 CImageReaderView::CImageReaderView() noexcept
 {
@@ -33,13 +53,8 @@ CImageReaderView::~CImageReaderView()
 
 BOOL CImageReaderView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: Modify the Window class or styles here by modifying
-	//  the CREATESTRUCT cs
-
 	return CView::PreCreateWindow(cs);
 }
-
-// CImageReaderView drawing
 
 void CImageReaderView::OnDraw(CDC* pDC)
 {
@@ -50,9 +65,6 @@ void CImageReaderView::OnDraw(CDC* pDC)
 
 	Draw(pDC);
 }
-
-
-// CImageReaderView diagnostics
 
 #ifdef _DEBUG
 void CImageReaderView::AssertValid() const
@@ -103,6 +115,7 @@ void CImageReaderView::Draw(CDC* pDC)
 	auto bound = GetContentBound();
 	Gdiplus::Graphics graphics(pDC->GetSafeHdc());
 	
+	DrawBackground(graphics, bound);
 	graphics.DrawImage(m_pBitmap.get(), bound.X, bound.Y, bound.Width, bound.Height);
 }
 

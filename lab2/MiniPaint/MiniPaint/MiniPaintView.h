@@ -56,6 +56,9 @@ private:
 	std::shared_ptr<Gdiplus::Bitmap> m_pBitmap;
 	std::shared_ptr<Gdiplus::Bitmap> m_pBackBuffer;
 	ContentFitManager m_contentFitManager;
+
+public:
+	afx_msg void OnFileNew();
 };
 
 #ifndef _DEBUG  // debug version in MiniPaintView.cpp

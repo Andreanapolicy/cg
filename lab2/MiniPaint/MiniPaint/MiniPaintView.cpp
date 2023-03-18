@@ -18,6 +18,7 @@ BEGIN_MESSAGE_MAP(CMiniPaintView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_COMMAND(ID_FILE_OPEN, &CMiniPaintView::OnFileOpen)
+	ON_COMMAND(ID_FILE_NEW, &CMiniPaintView::OnFileNew)
 END_MESSAGE_MAP()
 
 // CMiniPaintView construction/destruction
@@ -123,7 +124,8 @@ void CMiniPaintView::Draw(CDC* pDC)
 	if (m_pBackBuffer.get())
 	{
 		Gdiplus::Graphics graphics(pDC->GetSafeHdc());
-		Gdiplus::Pen pen(Gdiplus::Color::Red);
+		Gdiplus::Pen pen(Gdiplus::Color::Black);
+		graphics.DrawRectangle(&pen, 20, 20, 500, 200);
 		graphics.DrawImage(m_pBackBuffer.get(), 0, 0);
 	}
 }
@@ -146,4 +148,20 @@ Gdiplus::Rect CMiniPaintView::GetContentBound()
 	auto bounds = m_contentFitManager.GetContentBounds();
 
 	return { bounds.x, bounds.y, bounds.width, bounds.height };
+}
+
+void CMiniPaintView::OnFileNew()
+{
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	unsigned clientWidth = rcClient.Width();
+	unsigned clientHeight = rcClient.Height();
+
+	m_pBitmap.reset(new Gdiplus::Bitmap(clientWidth, clientHeight));
+	Gdiplus::Graphics graphics(m_pBitmap.get());
+	Gdiplus::Pen pen(Gdiplus::Color::Black);
+	graphics.DrawRectangle(&pen, 20, 20, clientWidth - 20, clientHeight - 20);
+
+	Invalidate();
+	UpdateWindow();
 }

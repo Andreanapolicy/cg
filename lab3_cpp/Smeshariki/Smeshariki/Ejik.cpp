@@ -24,6 +24,34 @@ void FillEllipse(float xCenter, float yCenter, float rx, float ry, int points)
 
 	glEnd();
 }
+
+void DrawBody()
+{
+	glColor3f(0.81, 0.14, 0.58);
+
+	FillEllipse(200, 200, 80, 120, 360);
+}
+
+void DrawEyes()
+{
+
+}
+
+void DrawHead()
+{
+
+}
+
+void DrawHands()
+{
+
+}
+
+void DrawLegs()
+{
+
+}
+
 }
 
 
@@ -37,9 +65,7 @@ void Ejik::Draw(float x, float y)
 
 	glPointSize(2.0);
 
-	glColor3f(0.81, 0.14, 0.58);
-
-	FillEllipse(x, y, 80, 120, 360);
-
+	DrawBody();
+	
 	glFlush();
 }

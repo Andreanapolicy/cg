@@ -30,26 +30,45 @@ void DrawBody()
 	glColor3f(0.81, 0.14, 0.58);
 
 	FillEllipse(200, 200, 80, 120, 360);
+
+	FillEllipse(125, 250, 5, 8, 360);
+	FillEllipse(275, 250, 5, 8, 360);
+
+	glColor3f(0.56, 0.10, 0.41);
+	
+	glBegin(GL_TRIANGLE_STRIP);
+		glVertex2d(190, 200);
+		glVertex2d(210, 200);
+		glVertex2d(200, 190);
+	glEnd();
+	glBegin(GL_LINES);
+		glVertex2d(200, 190);
+		glVertex2d(200, 180);
+	glEnd();
+
+	glColor3f(0.22, 0.04, 0.16);
+	glBegin(GL_TRIANGLE_STRIP);
+		glVertex2d(190, 185);
+		glVertex2d(200, 180);
+		glVertex2d(200, 170);
+		glVertex2d(210, 185);
+	glEnd();
 }
 
 void DrawEyes()
 {
-
 }
 
 void DrawHead()
 {
-
 }
 
 void DrawHands()
 {
-
 }
 
 void DrawLegs()
 {
-
 }
 
 }

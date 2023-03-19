@@ -1,5 +1,31 @@
 #include "Ejik.h"
 #include <glut.h>
+#include <math.h>
+#include <numbers>
+
+namespace
+{
+void FillEllipse(float xCenter, float yCenter, float rx, float ry, int points)
+{
+	const float step = 2 * std::numbers::pi / points;
+
+	glBegin(GL_TRIANGLE_FAN);
+
+	glVertex2d(xCenter, yCenter);
+
+	for (float angle = 0; angle <= 2 * std::numbers::pi; angle += step)
+	{
+		float a = (fabsf(angle - 2 * std::numbers::pi) < 1e-5) ? 0 : angle;
+		const float dx = rx * cosf(a);
+		const float dy = ry * sinf(a);
+	
+		glVertex2f(dx + xCenter, dy + yCenter);
+	}
+
+	glEnd();
+}
+}
+
 
 Ejik::Ejik()
 {
@@ -7,134 +33,13 @@ Ejik::Ejik()
 
 void Ejik::Draw(float x, float y)
 {
-
-	// Clear the screen buffer
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glPointSize(4.0);
+	glPointSize(2.0);
 
-	// Rectangular part of hut
-	glColor3f(0.5f, 0.5f, 0.5f);
+	glColor3f(0.81, 0.14, 0.58);
 
-	// Begin the polygon
-	glBegin(GL_POLYGON);
+	FillEllipse(x, y, 80, 120, 360);
 
-	// Create the polygon
-	glVertex2i(40, 40);
-	glVertex2i(320, 40);
-
-	glVertex2i(40, 200);
-	glVertex2i(320, 200);
-
-	glVertex2i(40, 200);
-	glVertex2i(40, 40);
-
-	glVertex2i(320, 200);
-	glVertex2i(320, 40);
-
-	glEnd();
-
-	// Right Window Update
-	glColor3f(1.0f, 0.0f, 0.0f);
-
-	// Begin the polygon
-	glBegin(GL_POLYGON);
-
-	// Create the polygon
-	glVertex2i(220, 60);
-	glVertex2i(300, 60);
-
-	glVertex2i(220, 150);
-	glVertex2i(300, 150);
-
-	glVertex2i(220, 60);
-	glVertex2i(220, 150);
-
-	glVertex2i(300, 150);
-	glVertex2i(300, 60);
-
-	glEnd();
-
-	// Right Window Update part 2
-	glColor3f(1.0f, 0.0f, 0.0f);
-
-	// Begin the polygon
-	glBegin(GL_POLYGON);
-
-	// Create the polygon
-	glVertex2i(220, 170);
-	glVertex2i(300, 170);
-
-	glVertex2i(220, 190);
-	glVertex2i(300, 190);
-
-	glVertex2i(220, 170);
-	glVertex2i(220, 190);
-
-	glVertex2i(300, 190);
-	glVertex2i(300, 170);
-
-	glEnd();
-
-	// Door
-	glColor3f(0.60f, 0.42f, 0.16f);
-
-	// Begin the polygon
-	glBegin(GL_POLYGON);
-
-	// Create the polygon
-	glVertex2i(130, 40);
-	glVertex2i(130, 160);
-
-	glVertex2i(130, 160);
-	glVertex2i(180, 160);
-
-	glVertex2i(180, 100);
-	glVertex2i(180, 40);
-
-	glVertex2i(120, 40);
-	glVertex2i(170, 40);
-
-	glEnd();
-
-	// Create Door Part 2
-	glColor3f(0.60f, 0.42f, 0.16f);
-
-	// Begin the polygon
-	glBegin(GL_POLYGON);
-
-	// Create the polygon
-	glVertex2i(130, 170);
-	glVertex2i(130, 180);
-
-	glVertex2i(130, 180);
-	glVertex2i(180, 180);
-
-	glVertex2i(180, 170);
-	glVertex2i(180, 180);
-
-	glVertex2i(130, 170);
-	glVertex2i(180, 170);
-
-	glEnd();
-
-	// Hut's top triangle part
-	glColor3f(1.0f, 0.0f, 1.0f);
-
-	// Begin the polygon
-	glBegin(GL_POLYGON);
-
-	// Create the polygon
-	glVertex2i(10, 200);
-	glVertex2i(340, 200);
-
-	glVertex2i(200, 390);
-
-	glVertex2i(10, 200);
-	glVertex2i(200, 390);
-
-	glEnd();
-
-	// Sends all output to display
 	glFlush();
 }

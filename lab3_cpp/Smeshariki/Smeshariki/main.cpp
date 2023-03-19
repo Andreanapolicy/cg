@@ -4,7 +4,7 @@
 void Draw()
 {
 	auto character = Ejik();
-	character.Draw(100, 100);
+	character.Draw(200, 200);
 }
 
 // Driver Code

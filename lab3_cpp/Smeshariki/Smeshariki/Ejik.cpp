@@ -79,6 +79,25 @@ void DrawEyes()
 
 void DrawHead()
 {
+	glColor3f(0.28, 0.18, 0.53);
+		
+	glBegin(GL_TRIANGLE_FAN);
+		glVertex2d(200, 100);
+
+		glVertex2d(90, 260);
+		glVertex2d(120, 280);
+		glVertex2d(122, 337);
+		glVertex2d(150, 320);
+		glVertex2d(170, 370);
+		glVertex2d(190, 330);
+		glVertex2d(208, 370);
+		glVertex2d(220, 326);
+		glVertex2d(245, 355);
+		glVertex2d(248, 312);
+		glVertex2d(280, 320);
+		glVertex2d(275, 280);
+		glVertex2d(310, 260);
+	glEnd();
 }
 
 void DrawHands()
@@ -102,6 +121,7 @@ void Ejik::Draw(float x, float y)
 
 	glPointSize(2.0);
 
+	DrawHead();
 	DrawBody();
 	
 	glFlush();

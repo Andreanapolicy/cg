@@ -89,12 +89,12 @@ void DrawHead()
 		glVertex2d(122, 337);
 		glVertex2d(150, 320);
 		glVertex2d(170, 370);
-		glVertex2d(190, 330);
-		glVertex2d(208, 370);
-		glVertex2d(220, 326);
-		glVertex2d(245, 355);
+		glVertex2d(190, 340);
+		glVertex2d(208, 380);
+		glVertex2d(220, 334);
+		glVertex2d(253, 361);
 		glVertex2d(248, 312);
-		glVertex2d(280, 320);
+		glVertex2d(287, 323);
 		glVertex2d(275, 280);
 		glVertex2d(310, 260);
 	glEnd();

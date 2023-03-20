@@ -75,6 +75,36 @@ void DrawBody()
 
 void DrawEyes()
 {
+	glColor3f(0.188, 0.153, 0.274);
+
+	FillEllipse(170, 220, 30, 50, 360);
+	FillEllipse(230, 220, 30, 50, 360);
+
+	glBegin(GL_TRIANGLE_STRIP);
+		glVertex2d(250, 230);
+		glVertex2d(275, 260);
+		glVertex2d(255, 225);
+		glVertex2d(275, 235);
+	glEnd();
+
+	glBegin(GL_TRIANGLE_STRIP);
+		glVertex2d(150, 230);
+		glVertex2d(125, 260);
+		glVertex2d(145, 225);
+		glVertex2d(125, 235);
+	glEnd();
+
+	
+	glColor3f(255, 255, 255);
+
+	FillEllipse(170, 220, 21, 35, 360);
+	FillEllipse(230, 220, 21, 35, 360);
+
+	
+	glColor3f(0, 0, 0);
+
+	FillEllipse(180, 215, 10, 20, 360);
+	FillEllipse(220, 215, 10, 20, 360);
 }
 
 void DrawHead()
@@ -123,6 +153,7 @@ void Ejik::Draw(float x, float y)
 
 	DrawHead();
 	DrawBody();
+	DrawEyes();
 	
 	glFlush();
 }

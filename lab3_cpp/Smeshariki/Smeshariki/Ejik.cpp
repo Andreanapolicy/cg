@@ -25,18 +25,19 @@ void FillEllipse(float xCenter, float yCenter, float rx, float ry, int points)
 	glEnd();
 }
 
-void DrawBody()
+void DrawEars()
 {
 	glColor3f(0.81, 0.14, 0.58);
 
-	FillEllipse(200, 200, 80, 120, 360);
+	FillEllipse(125, 250, 5, 8, 360);
+	FillEllipse(275, 250, 5, 8, 360);
+}
 
-	FillEllipse(125, 250, 5, 8, 360); // ears
-	FillEllipse(275, 250, 5, 8, 360); // ears
-
+void DrawEyebrows()
+{
 	glColor3f(0.56, 0.10, 0.41);
-	
-	glBegin(GL_TRIANGLE_FAN); // eyebrows
+
+	glBegin(GL_TRIANGLE_FAN);
 		glVertex2d(180, 280);
 		glVertex2d(170, 270);
 		glVertex2d(169, 278);
@@ -44,8 +45,8 @@ void DrawBody()
 		glVertex2d(192, 293);
 		glVertex2d(190, 284);
 	glEnd();
-	
-	glBegin(GL_TRIANGLE_FAN); // eyebrows
+
+	glBegin(GL_TRIANGLE_FAN);
 		glVertex2d(220, 280);
 		glVertex2d(230, 270);
 		glVertex2d(231, 278);
@@ -53,24 +54,43 @@ void DrawBody()
 		glVertex2d(208, 293);
 		glVertex2d(210, 284);
 	glEnd();
+}
 
-	glBegin(GL_TRIANGLE_STRIP); // nose
+void DrawNoseAndMouth()
+{
+	glColor3f(0.56, 0.10, 0.41);
+
+	glBegin(GL_TRIANGLE_STRIP);
 		glVertex2d(190, 200);
 		glVertex2d(210, 200);
 		glVertex2d(200, 190);
 	glEnd();
+
 	glBegin(GL_LINES);
 		glVertex2d(200, 190);
 		glVertex2d(200, 180);
 	glEnd();
 
 	glColor3f(0.22, 0.04, 0.16);
-	glBegin(GL_TRIANGLE_STRIP); // mouth
+	
+	glBegin(GL_TRIANGLE_STRIP);
 		glVertex2d(190, 185);
 		glVertex2d(200, 180);
 		glVertex2d(200, 170);
 		glVertex2d(210, 185);
 	glEnd();
+}
+
+void DrawBody()
+{
+	glColor3f(0.81, 0.14, 0.58);
+
+	FillEllipse(200, 200, 80, 120, 360);
+
+	DrawEars();
+	
+	DrawEyebrows();
+	DrawNoseAndMouth();
 }
 
 void DrawEyes()
@@ -93,7 +113,6 @@ void DrawEyes()
 		glVertex2d(145, 225);
 		glVertex2d(125, 235);
 	glEnd();
-
 	
 	glColor3f(255, 255, 255);
 
@@ -183,7 +202,6 @@ void DrawLegs()
 }
 
 }
-
 
 Ejik::Ejik()
 {

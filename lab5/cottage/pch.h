@@ -11,3 +11,6 @@
 
 #include <stdexcept>
 #include <string>
+#include <windows.h>
+#include "gdiplus.h"
+

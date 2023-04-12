@@ -2,13 +2,7 @@
 #include "Scene.h"
 #include "Cube.h"
 #include "CTextureLoader.h"
-
-namespace
-{
-const std::wstring WOOD_TEXTURE = L"./wood_texture.png";
-const std::wstring STONES_TEXTURE = L"./stones_texture.png";
-const std::wstring LAND_TEXTURE = L"./land_texture.jpg";
-}
+#include "TextureResourceName.h"
 
 Scene::Scene()
 {
@@ -29,7 +23,7 @@ void Scene::Draw() const
 	if (!m_woodTexture)
 	{
 		CTextureLoader loader;
-		m_woodTexture.Attach(loader.LoadTexture2D(WOOD_TEXTURE));
+		m_woodTexture.Attach(loader.LoadTexture2D(texture::name::WOOD_TEXTURE));
 	}
 
 	glEnable(GL_TEXTURE_2D);
@@ -53,7 +47,7 @@ void Scene::DrawLand() const
 	if (!m_landTexture)
 	{
 		CTextureLoader loader;
-		m_landTexture.Attach(loader.LoadTexture2D(LAND_TEXTURE));
+		m_landTexture.Attach(loader.LoadTexture2D(texture::name::LAND_TEXTURE));
 	}
 	glEnable(GL_TEXTURE_2D);
 	m_landTexture.Bind();

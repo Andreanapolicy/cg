@@ -5,7 +5,9 @@
 
 namespace
 {
-const std::wstring WOOD_TEXTURE = L"./image.jpg";
+const std::wstring WOOD_TEXTURE = L"./wood_texture.png";
+const std::wstring STONES_TEXTURE = L"./stones_texture.png";
+const std::wstring LAND_TEXTURE = L"./land_texture.jpg";
 }
 
 Scene::Scene()
@@ -22,24 +24,52 @@ Scene::Scene()
 
 void Scene::Draw() const
 {
-	if (!m_texture)
+	DrawLand();
+
+	if (!m_woodTexture)
 	{
-		// Загружаем текстуру при первом вызове метода Draw()
 		CTextureLoader loader;
-		m_texture.Attach(loader.LoadTexture2D(WOOD_TEXTURE));
+		m_woodTexture.Attach(loader.LoadTexture2D(WOOD_TEXTURE));
 	}
 
-	// Активизируем текстуру и материал планеты
-
 	glEnable(GL_TEXTURE_2D);
-	m_texture.Bind();
+	m_woodTexture.Bind();
 
-	// Сохраняем текущую матрицу (предполагается работа с матрицей modelview)
-	// и поворачиваем планету
-	// (сначала вокруг оси вращения, а затем наклоняем ось)
 	glPushMatrix();
-	// рисуем сферу
+	glScalef(0.3f, 1.0f, 1.0f);
 	m_cube.Draw();
-	// восстанавливаем текущую матрицу
 	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(2.0f, 0.0f, 2.0f);
+	m_cube.Draw();
+
+	glPopMatrix();
+}
+
+void Scene::DrawLand() const
+{
+	if (!m_landTexture)
+	{
+		CTextureLoader loader;
+		m_landTexture.Attach(loader.LoadTexture2D(LAND_TEXTURE));
+	}
+	glEnable(GL_TEXTURE_2D);
+	m_landTexture.Bind();
+	glPushMatrix();
+
+	for (auto indexI = -2.0f; indexI <= 2.0f; indexI += 1.0f)
+	{
+		for (auto indexJ = -2.0f; indexJ <= 2.0f; indexJ += 1.0f)
+		{
+			glPushMatrix();
+			{
+				glScalef(4.0f, 0.1f, 4.0f);
+				glTranslatef(indexI, -5.0f, indexJ);
+				m_cube.Draw();
+			}
+			glPopMatrix();
+		}
+	}
 }

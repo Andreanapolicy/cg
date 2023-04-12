@@ -12,6 +12,11 @@ public:
 	~Scene() = default;
 
 private:
+	void DrawLand() const;
+
+
 	Cube m_cube;
-	mutable CTexture2D m_texture;
+	mutable CTexture2D m_woodTexture;
+	mutable CTexture2D m_stoneTexture;
+	mutable CTexture2D m_landTexture;
 };

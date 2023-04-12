@@ -20,7 +20,7 @@ void Object::Draw(void) const
 			y = sin(t) * (2 + (r / 2) * cos(t / 2));
 			z = (r / 2) * sin(t / 2);
 
-			glColor3f(0.24, 0.8, 0.43);
+			glColor3f(abs(x / 2.5), abs(y / 2.5), abs(z / 2.5));
 			glVertex3f(x / 2.5, y / 2.5, z / 2.5);
 		}
 		
@@ -36,7 +36,7 @@ void Object::Draw(void) const
 			y = sin(t) * (2 + (r / 2) * cos(t / 2));
 			z = (r / 2) * sin(t / 2);
 
-			glColor3f(0.24, 0.8, 0.43);
+			glColor3f(abs(x / 2.5), abs(y / 2.5), abs(z / 2.5));
 			glVertex3f(x / 2.5, y / 2.5, z / 2.5);
 		}
 		

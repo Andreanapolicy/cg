@@ -9,6 +9,7 @@ void Scene::Draw() const
 	DrawLand();
 	DrawHouseMainPart();
 	DrawHouseAdditionalPart();
+	DrawWindows();
 }
 
 std::shared_ptr<Cube> Scene::CreateCube(float size) const
@@ -98,6 +99,27 @@ void Scene::DrawHouseAdditionalPart() const
 	{
 		glScalef(1.5f, 1.3f, 0.7f);
 		glTranslatef(2.0f, 0.0f, 1.0f);
+		cube->Draw();
+	}
+	glPopMatrix();
+}
+
+void Scene::DrawWindows() const
+{
+	auto cube = CreateCube(0.5);
+	if (!m_glassTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_glassTexture.Attach(loader.LoadTexture2D(texture::name::GLASS_TEXTURE));
+	}
+	glEnable(GL_TEXTURE_2D);
+	m_glassTexture.Bind();
+
+	glPushMatrix();
+	{
+		glScalef(1.5f, 1.3f, 0.7f);
+		glTranslatef(2.0f, 0.0f, -2.0f);
 		cube->Draw();
 	}
 	glPopMatrix();

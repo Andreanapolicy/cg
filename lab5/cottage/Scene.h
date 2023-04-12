@@ -14,8 +14,10 @@ private:
 	void DrawLand() const;
 	void DrawHouseMainPart() const;
 	void DrawHouseAdditionalPart() const;
+	void DrawWindows() const;
 
 	mutable CTexture2D m_woodTexture;
 	mutable CTexture2D m_stoneTexture;
 	mutable CTexture2D m_landTexture;
+	mutable CTexture2D m_glassTexture;
 };

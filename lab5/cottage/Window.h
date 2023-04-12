@@ -25,12 +25,12 @@ private:
 
 	Scene m_scene;
 	// Расстояние от камеры до точки вращения
-	static constexpr double DISTANCE_TO_ORIGIN = 4;
+	static constexpr double DISTANCE_TO_ORIGIN = 6;
 
 	bool m_leftButtonPressed = false;
 	glm::dvec2 m_mousePos = {};
 	glm::dmat4x4 m_cameraMatrix = glm::lookAt(
-		glm::dvec3{ 3.0, 3.0, DISTANCE_TO_ORIGIN },
+		glm::dvec3{ 3.0, 5.0, DISTANCE_TO_ORIGIN },
 		glm::dvec3{ 0.0, 0.0, 0.0 },
 		glm::dvec3{ 0.0, 1.0, 0.0 });
 };

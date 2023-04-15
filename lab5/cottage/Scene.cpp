@@ -244,15 +244,39 @@ void Scene::DrawGarade() const
 
 void Scene::DrawRoof() const
 {
-	auto pyramid = CreatePyramid({ 1.0f, 2.0f, 3.0f, 4.0f }, 1);
+	auto pyramid = CreatePyramid({ 1.0f, 2.0f, 3.0f, 4.0f }, 0.7);
 	InitWoodTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_woodTexture.Bind();
 
 	glPushMatrix();
 	{
-		glTranslatef(3.5f, 0.0f, -3.0f);
-		glScalef(2.0f, 2.0f, 2.0f);
+		glTranslatef(-2.5f, 1.5f, 0.7f);
+		glScalef(2.0f, 2.0f, 2.5f);
+		pyramid->Draw();
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glTranslatef(-0.5f, 1.5f, 0.7f);
+		glScalef(2.0f, 2.0f, 2.5f);
+		pyramid->Draw();
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glTranslatef(1.5f, 1.5f, 0.7f);
+		glScalef(2.0f, 2.0f, 2.5f);
+		pyramid->Draw();
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glTranslatef(3.5f, 0.3f, 0.7f);
+		glScalef(2.2f, 2.0f, 2.0f);
 		pyramid->Draw();
 	}
 	glPopMatrix();

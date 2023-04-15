@@ -10,6 +10,7 @@ void Scene::Draw() const
 	DrawHouseMainPart();
 	DrawHouseAdditionalPart();
 	DrawWindows();
+	DrawBalcony();
 }
 
 std::shared_ptr<Cube> Scene::CreateCube(float size) const
@@ -106,7 +107,7 @@ void Scene::DrawHouseAdditionalPart() const
 
 void Scene::DrawWindows() const
 {
-	auto cube = CreateCube(0.5);
+	auto cube = CreateCube(0.8);
 	if (!m_glassTexture)
 	{
 		CTextureLoader loader;
@@ -118,8 +119,80 @@ void Scene::DrawWindows() const
 
 	glPushMatrix();
 	{
-		glScalef(1.5f, 1.3f, 0.7f);
-		glTranslatef(2.0f, 0.0f, -2.0f);
+		glTranslatef(1.8f, 1.8f, 1.8f);
+		glScalef(1.0f, 1.0f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glTranslatef(-2.7f, 1.8f, 1.8f);
+		glScalef(1.0f, 1.0f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+
+	cube = CreateCube(1.5);
+	glPushMatrix();
+	{
+		glTranslatef(-0.4f, 1.7f, 1.8f);
+		glScalef(0.85f, 0.6f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+}
+
+void Scene::DrawBalcony() const
+{
+	auto cube = CreateCube(0.8);
+	if (!m_stoneTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_stoneTexture.Attach(loader.LoadTexture2D(texture::name::STONES_TEXTURE));
+	}
+	glEnable(GL_TEXTURE_2D);
+	m_stoneTexture.Bind();
+
+	glPushMatrix();
+	{
+		glTranslatef(-0.8f, 1.5f, 2.58f);
+		glScalef(1.0f, 0.5f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+	glPushMatrix();
+	{
+		glTranslatef(0.0f, 1.5f, 2.58f);
+		glScalef(1.0f, 0.5f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glTranslatef(0.32f, 1.5f, 2.1f);
+		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+		glScalef(1.0f, 0.5f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glTranslatef(-1.12f, 1.5f, 2.1f);
+		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+		glScalef(1.0f, 0.5f, 0.2f);
+		cube->Draw();
+	}
+	glPopMatrix();
+
+	cube = CreateCube(1.6);
+	glPushMatrix();
+	{
+		glTranslatef(-0.4f, 1.22f, 2.1f);
+		glScalef(1.0f, 0.1f, 0.7f);
 		cube->Draw();
 	}
 	glPopMatrix();

@@ -15,6 +15,7 @@ private:
 	void DrawHouseMainPart() const;
 	void DrawHouseAdditionalPart() const;
 	void DrawWindows() const;
+	void DrawBalcony() const;
 
 	mutable CTexture2D m_woodTexture;
 	mutable CTexture2D m_stoneTexture;

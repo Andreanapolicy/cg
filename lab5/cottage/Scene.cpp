@@ -38,11 +38,7 @@ void Scene::DrawLand() const
 {
 	auto floor = CreateCube(1);
 
-	if (!m_landTexture)
-	{
-		CTextureLoader loader;
-		m_landTexture.Attach(loader.LoadTexture2D(texture::name::LAND_TEXTURE));
-	}
+	InitLandTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_landTexture.Bind();
 
@@ -64,12 +60,7 @@ void Scene::DrawLand() const
 void Scene::DrawHouseMainPart() const
 {
 	auto cube = CreateCube(3);
-	if (!m_woodTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_woodTexture.Attach(loader.LoadTexture2D(texture::name::WOOD_TEXTURE));
-	}
+	InitWoodTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_woodTexture.Bind();
 
@@ -92,12 +83,7 @@ void Scene::DrawHouseMainPart() const
 void Scene::DrawHouseAdditionalPart() const
 {
 	auto cube = CreateCube(2);
-	if (!m_woodTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_woodTexture.Attach(loader.LoadTexture2D(texture::name::WOOD_TEXTURE));
-	}
+	InitWoodTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_woodTexture.Bind();
 
@@ -113,12 +99,7 @@ void Scene::DrawHouseAdditionalPart() const
 void Scene::DrawWindows() const
 {
 	auto cube = CreateCube(0.8);
-	if (!m_glassTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_glassTexture.Attach(loader.LoadTexture2D(texture::name::GLASS_TEXTURE));
-	}
+	InitGlassTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_glassTexture.Bind();
 
@@ -151,12 +132,7 @@ void Scene::DrawWindows() const
 void Scene::DrawBalcony() const
 {
 	auto cube = CreateCube(0.8);
-	if (!m_stoneTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_stoneTexture.Attach(loader.LoadTexture2D(texture::name::STONES_TEXTURE));
-	}
+	InitStoneTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_stoneTexture.Bind();
 
@@ -206,12 +182,7 @@ void Scene::DrawBalcony() const
 void Scene::DrawDoor() const
 {
 	auto cube = CreateCube(1.0);
-	if (!m_doorTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_doorTexture.Attach(loader.LoadTexture2D(texture::name::DOOR_TEXTURE));
-	}
+	InitDoorTextureIfNeeded();
 	glEnable(GL_TEXTURE_2D);
 	m_doorTexture.Bind();
 
@@ -339,5 +310,15 @@ void Scene::InitGlassTextureIfNeeded() const
 		CTextureLoader loader;
 		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
 		m_glassTexture.Attach(loader.LoadTexture2D(texture::name::GLASS_TEXTURE));
+	}
+}
+
+void Scene::InitGrassTextureIfNeeded() const
+{
+	if (!m_grassTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_grassTexture.Attach(loader.LoadTexture2D(texture::name::GRASS_TEXTURE));
 	}
 }

@@ -29,6 +29,7 @@ private:
 	void InitDoorTextureIfNeeded() const;
 	void InitSteelTextureIfNeeded() const;
 	void InitGlassTextureIfNeeded() const;
+	void InitGrassTextureIfNeeded() const;
 
 	mutable CTexture2D m_woodTexture;
 	mutable CTexture2D m_stoneTexture;
@@ -36,4 +37,5 @@ private:
 	mutable CTexture2D m_glassTexture;
 	mutable CTexture2D m_doorTexture;
 	mutable CTexture2D m_steelTexture;
+	mutable CTexture2D m_grassTexture;
 };

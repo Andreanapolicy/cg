@@ -25,6 +25,11 @@ BaseWindow::BaseWindow(int w, int h, const char* title)
 		[](GLFWwindow* window, double x, double y) {
 			GetBaseWindow(window)->OnMouseMove(x, y);
 		});
+
+	glfwSetScrollCallback(m_window,
+		[](GLFWwindow* window, double xoffset, double yoffset) {
+			GetBaseWindow(window)->OnScroll(xoffset, yoffset);
+		});
 }
 
 BaseWindow::~BaseWindow()

@@ -26,6 +26,7 @@ private:
 		[[maybe_unused]] int mods) {}
 	virtual void OnMouseMove(
 		[[maybe_unused]] double x, [[maybe_unused]] double y) {}
+	virtual void OnScroll(double x, double y) {}
 	virtual void Draw(int width, int height) = 0;
 	virtual void OnRunStart() {}
 	virtual void OnRunEnd() {}

@@ -41,6 +41,11 @@ void Window::OnMouseButton(int button, int action, int mods)
 	}
 }
 
+void Window::OnScroll(double /*x*/, double y)
+{
+	m_destance_to_origin += y;
+}
+
 void Window::OnMouseMove(double x, double y)
 {
 	const glm::dvec2 mousePos{ x, y };

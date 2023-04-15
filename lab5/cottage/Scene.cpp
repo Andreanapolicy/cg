@@ -11,6 +11,8 @@ void Scene::Draw() const
 	DrawHouseAdditionalPart();
 	DrawWindows();
 	DrawBalcony();
+	DrawDoor();
+	DrawGarade();
 }
 
 std::shared_ptr<Cube> Scene::CreateCube(float size) const
@@ -193,6 +195,48 @@ void Scene::DrawBalcony() const
 	{
 		glTranslatef(-0.4f, 1.22f, 2.1f);
 		glScalef(1.0f, 0.1f, 0.7f);
+		cube->Draw();
+	}
+	glPopMatrix();
+}
+
+void Scene::DrawDoor() const
+{
+	auto cube = CreateCube(1.0);
+	if (!m_doorTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_doorTexture.Attach(loader.LoadTexture2D(texture::name::DOOR_TEXTURE));
+	}
+	glEnable(GL_TEXTURE_2D);
+	m_doorTexture.Bind();
+
+	glPushMatrix();
+	{
+		glTranslatef(-0.4f, 0.0f, 1.75f);
+		glScalef(0.6f, 1.1f, 0.05f);
+		cube->Draw();
+	}
+	glPopMatrix();
+}
+
+void Scene::DrawGarade() const
+{
+	auto cube = CreateCube(1.8);
+	if (!m_steelTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_steelTexture.Attach(loader.LoadTexture2D(texture::name::STEEL_TEXTURE));
+	}
+	glEnable(GL_TEXTURE_2D);
+	m_steelTexture.Bind();
+
+	glPushMatrix();
+	{
+		glTranslatef(3.5f, 0.0f, 1.45f);
+		glScalef(1.0f, 1.0f, 0.05f);
 		cube->Draw();
 	}
 	glPopMatrix();

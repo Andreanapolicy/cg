@@ -32,7 +32,7 @@ private:
 	bool m_leftButtonPressed = false;
 	glm::dvec2 m_mousePos = {};
 	glm::dmat4x4 m_cameraMatrix = glm::lookAt(
-		glm::dvec3{ 3.0, 5.0, m_destance_to_origin },
+		glm::dvec3{ 7.0, 5.0, m_destance_to_origin },
 		glm::dvec3{ 0.0, 0.0, 0.0 },
 		glm::dvec3{ 0.0, 1.0, 0.0 });
 };

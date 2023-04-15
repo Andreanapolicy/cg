@@ -4,13 +4,6 @@
 Cube::Cube(float size)
 	: m_size(size)
 {
-	constexpr glm::vec4 defaultColor{ 1, 1, 1, 1 };
-	SetSideColor(CubeSide::NEGATIVE_X, defaultColor);
-	SetSideColor(CubeSide::POSITIVE_X, defaultColor);
-	SetSideColor(CubeSide::NEGATIVE_Y, defaultColor);
-	SetSideColor(CubeSide::POSITIVE_Y, defaultColor);
-	SetSideColor(CubeSide::NEGATIVE_Z, defaultColor);
-	SetSideColor(CubeSide::POSITIVE_Z, defaultColor);
 }
 
 void Cube::Draw() const
@@ -84,12 +77,6 @@ void Cube::Draw() const
 		glVertex3f(-0.5f * m_size, -0.5f * m_size, 0.5f * m_size);
 	}
 	glEnd();
-}
-
-void Cube::SetSideColor(CubeSide side, const glm::vec4& color)
-{
-	unsigned index = static_cast<unsigned>(side);
-	m_sideColors[index] = color;
 }
 
 void Cube::SetSpecularColor(glm::vec4 color)

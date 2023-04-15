@@ -13,22 +13,25 @@ void Scene::Draw() const
 	DrawBalcony();
 	DrawDoor();
 	DrawGarade();
+	DrawRoof();
 }
 
 std::shared_ptr<Cube> Scene::CreateCube(float size) const
 {
 	auto cube = std::make_shared<Cube>(size);
-
-	cube->SetSideColor(CubeSide::NEGATIVE_X, { 1, 1, 1, 1 });
-	cube->SetSideColor(CubeSide::POSITIVE_X, { 1, 1, 1, 1 });
-	cube->SetSideColor(CubeSide::NEGATIVE_Y, { 1, 1, 1, 1 });
-	cube->SetSideColor(CubeSide::POSITIVE_Y, { 1, 1, 1, 1 });
-	cube->SetSideColor(CubeSide::NEGATIVE_Z, { 1, 1, 1, 1 });
-	cube->SetSideColor(CubeSide::POSITIVE_Z, { 1, 1, 1, 1 });
 	cube->SetSpecularColor({ 1, 1, 1, 1 });
 	cube->SetShininess(4.0f);
 
 	return cube;
+}
+
+std::shared_ptr<Pyramid> Scene::CreatePyramid(Pyramid::PyramidSideSize&& size, float height) const
+{
+	auto pyramid = std::make_shared<Pyramid>(std::move(size), height);
+	pyramid->SetSpecularColor({ 1, 1, 1, 1 });
+	pyramid->SetShininess(4.0f);
+
+	return pyramid;
 }
 
 void Scene::DrawLand() const
@@ -224,12 +227,9 @@ void Scene::DrawDoor() const
 void Scene::DrawGarade() const
 {
 	auto cube = CreateCube(1.8);
-	if (!m_steelTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_steelTexture.Attach(loader.LoadTexture2D(texture::name::STEEL_TEXTURE));
-	}
+
+	InitSteelTextureIfNeeded();
+
 	glEnable(GL_TEXTURE_2D);
 	m_steelTexture.Bind();
 
@@ -240,4 +240,80 @@ void Scene::DrawGarade() const
 		cube->Draw();
 	}
 	glPopMatrix();
+}
+
+void Scene::DrawRoof() const
+{
+	auto pyramid = CreatePyramid({ 1.0f, 2.0f, 3.0f, 4.0f }, 1);
+	InitWoodTextureIfNeeded();
+	glEnable(GL_TEXTURE_2D);
+	m_woodTexture.Bind();
+
+	glPushMatrix();
+	{
+		glTranslatef(3.5f, 0.0f, -3.0f);
+		glScalef(2.0f, 2.0f, 2.0f);
+		pyramid->Draw();
+	}
+	glPopMatrix();
+}
+
+void Scene::InitWoodTextureIfNeeded() const
+{
+	if (!m_woodTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_woodTexture.Attach(loader.LoadTexture2D(texture::name::WOOD_TEXTURE));
+	}
+}
+
+void Scene::InitSteelTextureIfNeeded() const
+{
+	if (!m_steelTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_steelTexture.Attach(loader.LoadTexture2D(texture::name::STEEL_TEXTURE));
+	}
+}
+
+void Scene::InitDoorTextureIfNeeded() const
+{
+	if (!m_doorTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_doorTexture.Attach(loader.LoadTexture2D(texture::name::DOOR_TEXTURE));
+	}
+}
+
+void Scene::InitStoneTextureIfNeeded() const
+{
+	if (!m_stoneTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_stoneTexture.Attach(loader.LoadTexture2D(texture::name::STONES_TEXTURE));
+	}
+}
+
+void Scene::InitLandTextureIfNeeded() const
+{
+	if (!m_landTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_landTexture.Attach(loader.LoadTexture2D(texture::name::LAND_TEXTURE));
+	}
+}
+
+void Scene::InitGlassTextureIfNeeded() const
+{
+	if (!m_glassTexture)
+	{
+		CTextureLoader loader;
+		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
+		m_glassTexture.Attach(loader.LoadTexture2D(texture::name::GLASS_TEXTURE));
+	}
 }

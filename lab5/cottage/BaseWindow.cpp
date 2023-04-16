@@ -30,6 +30,9 @@ BaseWindow::BaseWindow(int w, int h, const char* title)
 		[](GLFWwindow* window, double xoffset, double yoffset) {
 			GetBaseWindow(window)->OnScroll(xoffset, yoffset);
 		});
+	glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+		GetBaseWindow(window)->OnKey(key, scancode, action, mods);
+	});
 }
 
 BaseWindow::~BaseWindow()

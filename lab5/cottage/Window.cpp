@@ -43,7 +43,14 @@ void Window::OnMouseButton(int button, int action, int mods)
 
 void Window::OnScroll(double /*x*/, double y)
 {
-	m_destance_to_origin += y;
+	m_zoomValue -= y;
+	m_zoomValue = max(40.0f, m_zoomValue);
+	m_zoomValue = min(80.0f, m_zoomValue);
+
+	glMatrixMode(GL_PROJECTION);
+	const auto proj = glm::perspective(glm::radians(m_zoomValue), 800.0f / 600.0f, (float)Z_NEAR, (float)Z_FAR);
+	glLoadMatrixf(&proj[0][0]);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void Window::OnMouseMove(double x, double y)
@@ -59,6 +66,30 @@ void Window::OnMouseMove(double x, double y)
 		RotateCamera(xAngle, yAngle);
 	}
 	m_mousePos = mousePos;
+}
+
+void Window::SetupFog()
+{
+	if (m_isFogEnabled)
+	{
+		const float density = 0.2f;
+		glEnable(GL_FOG);
+		glFogi(GL_FOG_MODE, GL_EXP2);
+		glFogf(GL_FOG_COLOR, (1.0f, 1.0f, 0.5f, 1.0f));
+		glFogf(GL_FOG_DENSITY, density);
+	}
+	else
+	{
+		glDisable(GL_FOG);
+	}
+}
+
+void Window::OnKey(int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_F && action == 1)
+	{
+		m_isFogEnabled = !m_isFogEnabled;	
+	}
 }
 
 // Вращаем камеру вокруг начала координат
@@ -123,7 +154,7 @@ void Window::Draw(int width, int height)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	SetupCameraMatrix();
-
+	SetupFog();
 	m_scene.Draw();
 }
 

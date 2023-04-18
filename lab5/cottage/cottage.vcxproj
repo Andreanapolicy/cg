@@ -170,6 +170,7 @@
     </ClCompile>
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="TextureProvider.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +187,7 @@
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureProvider.h" />
     <ClInclude Include="TextureResourceName.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

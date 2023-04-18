@@ -31,6 +31,7 @@ glm::dmat4x4 Orthonormalize(const glm::dmat4x4& m)
 Window::Window(int w, int h, const char* title)
 	: BaseWindow(w, h, title)
 {
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 }
 
 void Window::OnMouseButton(int button, int action, int mods)
@@ -72,10 +73,11 @@ void Window::SetupFog()
 {
 	if (m_isFogEnabled)
 	{
+		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 		const float density = 0.2f;
 		glEnable(GL_FOG);
 		glFogi(GL_FOG_MODE, GL_EXP2);
-		glFogf(GL_FOG_COLOR, (1.0f, 1.0f, 0.5f, 1.0f));
+		glFogf(GL_FOG_COLOR, (0.5f, 0.5f, 0.5f, 1.0f));
 		glFogf(GL_FOG_DENSITY, density);
 	}
 	else

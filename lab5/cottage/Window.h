@@ -21,7 +21,7 @@ private:
 
 	Scene m_scene;
 	
-	int m_destance_to_origin = 6;
+	int m_destance_to_origin = 4;
 
 	bool m_leftButtonPressed = false;
 	bool m_isFogEnabled = true;

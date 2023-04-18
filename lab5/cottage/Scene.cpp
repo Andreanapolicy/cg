@@ -2,7 +2,29 @@
 #include "Scene.h"
 #include "CTextureLoader.h"
 #include "Cube.h"
+#include "Pyramid.h"
 #include "TextureResourceName.h"
+
+namespace
+{
+std::shared_ptr<Cube> CreateCube(float size)
+{
+	auto cube = std::make_shared<Cube>(size);
+	cube->SetSpecularColor({ 1, 1, 1, 1 });
+	cube->SetShininess(4.0f);
+
+	return cube;
+}
+
+std::shared_ptr<Pyramid> CreatePyramid(Pyramid::PyramidSideSize&& size, float height)
+{
+	auto pyramid = std::make_shared<Pyramid>(std::move(size), height);
+	pyramid->SetSpecularColor({ 1, 1, 1, 1 });
+	pyramid->SetShininess(4.0f);
+
+	return pyramid;
+}
+}
 
 void Scene::Draw() const
 {
@@ -16,30 +38,12 @@ void Scene::Draw() const
 	DrawRoof();
 }
 
-std::shared_ptr<Cube> Scene::CreateCube(float size) const
-{
-	auto cube = std::make_shared<Cube>(size);
-	cube->SetSpecularColor({ 1, 1, 1, 1 });
-	cube->SetShininess(4.0f);
-
-	return cube;
-}
-
-std::shared_ptr<Pyramid> Scene::CreatePyramid(Pyramid::PyramidSideSize&& size, float height) const
-{
-	auto pyramid = std::make_shared<Pyramid>(std::move(size), height);
-	pyramid->SetSpecularColor({ 1, 1, 1, 1 });
-	pyramid->SetShininess(4.0f);
-
-	return pyramid;
-}
-
 void Scene::DrawLand() const
 {
 	auto floor = CreateCube(1);
 
-	InitLandTextureIfNeeded();
-	InitGrassTextureIfNeeded();
+	auto landTexture = textureProvider.GetTexture(texture::name::LAND_TEXTURE);
+	auto grassTexture = textureProvider.GetTexture(texture::name::GRASS_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
 	
 	for (auto indexI = -2.0f; indexI <= 2.0f; indexI += 1.0f)
@@ -48,11 +52,11 @@ void Scene::DrawLand() const
 		{
 			if ((int)indexI + (int)indexJ % 2 == 0)
 			{
-				m_landTexture.Bind();		
+				landTexture->Bind();		
 			}
 			else
 			{
-				m_grassTexture.Bind();			
+				grassTexture->Bind();			
 			}
 			glPushMatrix();
 			{
@@ -68,9 +72,9 @@ void Scene::DrawLand() const
 void Scene::DrawHouseMainPart() const
 {
 	auto cube = CreateCube(3);
-	InitWoodTextureIfNeeded();
+	auto woodTexture = textureProvider.GetTexture(texture::name::WOOD_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	m_woodTexture.Bind();
+	woodTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -91,9 +95,9 @@ void Scene::DrawHouseMainPart() const
 void Scene::DrawHouseAdditionalPart() const
 {
 	auto cube = CreateCube(2);
-	InitWoodTextureIfNeeded();
+	auto woodTexture = textureProvider.GetTexture(texture::name::WOOD_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	m_woodTexture.Bind();
+	woodTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -107,9 +111,9 @@ void Scene::DrawHouseAdditionalPart() const
 void Scene::DrawWindows() const
 {
 	auto cube = CreateCube(0.8);
-	InitGlassTextureIfNeeded();
+	auto glassTexture = textureProvider.GetTexture(texture::name::GLASS_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	m_glassTexture.Bind();
+	glassTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -140,9 +144,9 @@ void Scene::DrawWindows() const
 void Scene::DrawBalcony() const
 {
 	auto cube = CreateCube(0.8);
-	InitStoneTextureIfNeeded();
+	auto stoneTexture = textureProvider.GetTexture(texture::name::STONES_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	m_stoneTexture.Bind();
+	stoneTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -190,9 +194,9 @@ void Scene::DrawBalcony() const
 void Scene::DrawDoor() const
 {
 	auto cube = CreateCube(1.0);
-	InitDoorTextureIfNeeded();
+	auto doorTexture = textureProvider.GetTexture(texture::name::DOOR_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	m_doorTexture.Bind();
+	doorTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -207,10 +211,10 @@ void Scene::DrawGarade() const
 {
 	auto cube = CreateCube(1.8);
 
-	InitSteelTextureIfNeeded();
+	auto steelTexture = textureProvider.GetTexture(texture::name::STEEL_TEXTURE);
 
 	glEnable(GL_TEXTURE_2D);
-	m_steelTexture.Bind();
+	steelTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -224,9 +228,9 @@ void Scene::DrawGarade() const
 void Scene::DrawRoof() const
 {
 	auto pyramid = CreatePyramid({ 1.0f, 2.0f, 3.0f, 4.0f }, 0.7);
-	InitWoodTextureIfNeeded();
+	auto woodTexture = textureProvider.GetTexture(texture::name::WOOD_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
-	m_woodTexture.Bind();
+	woodTexture->Bind();
 
 	glPushMatrix();
 	{
@@ -259,74 +263,4 @@ void Scene::DrawRoof() const
 		pyramid->Draw();
 	}
 	glPopMatrix();
-}
-
-void Scene::InitWoodTextureIfNeeded() const
-{
-	if (!m_woodTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_woodTexture.Attach(loader.LoadTexture2D(texture::name::WOOD_TEXTURE));
-	}
-}
-
-void Scene::InitSteelTextureIfNeeded() const
-{
-	if (!m_steelTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_steelTexture.Attach(loader.LoadTexture2D(texture::name::STEEL_TEXTURE));
-	}
-}
-
-void Scene::InitDoorTextureIfNeeded() const
-{
-	if (!m_doorTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_doorTexture.Attach(loader.LoadTexture2D(texture::name::DOOR_TEXTURE));
-	}
-}
-
-void Scene::InitStoneTextureIfNeeded() const
-{
-	if (!m_stoneTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_stoneTexture.Attach(loader.LoadTexture2D(texture::name::STONES_TEXTURE));
-	}
-}
-
-void Scene::InitLandTextureIfNeeded() const
-{
-	if (!m_landTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_landTexture.Attach(loader.LoadTexture2D(texture::name::LAND_TEXTURE));
-	}
-}
-
-void Scene::InitGlassTextureIfNeeded() const
-{
-	if (!m_glassTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_glassTexture.Attach(loader.LoadTexture2D(texture::name::GLASS_TEXTURE));
-	}
-}
-
-void Scene::InitGrassTextureIfNeeded() const
-{
-	if (!m_grassTexture)
-	{
-		CTextureLoader loader;
-		loader.SetWrapMode(GL_REPEAT, GL_REPEAT);
-		m_grassTexture.Attach(loader.LoadTexture2D(texture::name::GRASS_TEXTURE));
-	}
 }

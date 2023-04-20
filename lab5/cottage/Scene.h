@@ -9,7 +9,6 @@ public:
 	~Scene() = default;
 
 private:
-	void DrawLand() const;
 	void DrawHouseMainPart() const;
 	void DrawHouseAdditionalPart() const;
 	void DrawWindows() const;

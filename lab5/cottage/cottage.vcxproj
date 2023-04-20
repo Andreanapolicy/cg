@@ -161,6 +161,8 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DirectLight.cpp" />
     <ClCompile Include="GLFWInitializer.cpp" />
+    <ClCompile Include="House.cpp" />
+    <ClCompile Include="Land.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -183,6 +185,8 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DirectLight.h" />
     <ClInclude Include="GLFWInitializer.h" />
+    <ClInclude Include="House.h" />
+    <ClInclude Include="Land.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Scene.h" />

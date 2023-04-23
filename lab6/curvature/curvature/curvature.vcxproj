@@ -159,8 +159,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseWindow.cpp" />
-    <ClCompile Include="GLFWInitializer.cpp" />
+    <ClCompile Include="CGLApplication.cpp" />
+    <ClCompile Include="CMyApplication.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -172,18 +172,21 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseWindow.h" />
-    <ClInclude Include="GLFWInitializer.h" />
+    <ClInclude Include="CGLApplication.h" />
+    <ClInclude Include="CMyApplication.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ProgramLinker.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderCompiler.h" />
     <ClInclude Include="ShaderLoader.h" />
-    <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\vertex_shader.vsh">
+      <FileType>Document</FileType>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

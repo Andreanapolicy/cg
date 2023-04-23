@@ -439,7 +439,7 @@ public:
 	void SetParameter(GLenum pname, GLint value)
 	{
 		assert(m_program);
-		glProgramParameteri(m_program, pname, value);
+		//glProgramParameteri(m_program, pname, value);
 	}
 
 private:

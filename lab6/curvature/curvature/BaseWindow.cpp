@@ -43,7 +43,6 @@ void BaseWindow::Run()
 {
 	glfwMakeContextCurrent(m_window);
 	OnRunStart();
-
 	{
 		auto size = GetFramebufferSize();
 		OnResize(size.x, size.y);
@@ -75,5 +74,8 @@ BaseWindow* BaseWindow::GetBaseWindow(GLFWwindow* window)
 GLFWwindow* BaseWindow::MakeWindow(int w, int h, const char* title)
 {
 	glfwWindowHint(GLFW_DEPTH_BITS, 24);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	return glfwCreateWindow(w, h, title, nullptr, nullptr);
 }

@@ -1,5 +1,9 @@
 #include "pch.h"
 #include "Window.h"
+#include "ShaderCompiler.h"
+#include "ShaderLoader.h"
+#include "ProgramLinker.h"
+#include "Scene.h"
 
 namespace
 {
@@ -53,13 +57,8 @@ void Window::OnMouseMove(double x, double y)
 	m_mousePos = mousePos;
 }
 
-// Вращаем камеру вокруг начала координат
 void Window::RotateCamera(double xAngleRadians, double yAngleRadians)
 {
-	// Извлекаем из 1 и 2 строки матрицы камеры направления осей вращения,
-	// совпадающих с экранными осями X и Y.
-	// Строго говоря, для этого надо извлекать столбцы их обратной матрицы камеры, но так как
-	// матрица камеры ортонормированная, достаточно транспонировать её подматрицу 3*3
 	const glm::dvec3 xAxis{
 		m_cameraMatrix[0][0], m_cameraMatrix[1][0], m_cameraMatrix[2][0]
 	};
@@ -75,8 +74,6 @@ void Window::RotateCamera(double xAngleRadians, double yAngleRadians)
 void Window::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
-
-	// Вычисляем соотношение сторон клиентской области окна
 	double aspect = double(width) / double(height);
 
 	glMatrixMode(GL_PROJECTION);
@@ -85,15 +82,50 @@ void Window::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void Window::InitShaders()
+{
+	// Проверяем поддержку геометрических шейдеров видеокартой
+	if (!GLEW_EXT_geometry_shader4)
+	{
+		throw std::runtime_error(
+			"The OpenGL implementation does not support geometry shaders");
+	}
+
+	ShaderLoader loader;
+	m_vertexShader = loader.LoadShader(GL_VERTEX_SHADER, L"shaders\\vertex_shader.vsh");
+
+	m_program.Create();
+	m_program.AttachShader(m_vertexShader);
+
+	// Компилируем шейдеры
+	ShaderCompiler compiler;
+	compiler.CompileShader(m_vertexShader);
+	compiler.CheckStatus();
+
+	//// Задаем параметры шейдерной программы
+	//// тип входных примитивов: точки
+	//m_program.SetParameter(GL_GEOMETRY_INPUT_TYPE_ARB, GL_POINTS);
+	//// типв выходных примитивов: лента из треугольникков
+	//m_program.SetParameter(GL_GEOMETRY_OUTPUT_TYPE_ARB, GL_TRIANGLE_STRIP);
+	//// Максимальное количество вершин, порождаемых геометрическим шейдером
+	//// за один вызов. Для ленты из двух треугольников оно равно 4
+	//m_program.SetParameter(GL_GEOMETRY_VERTICES_OUT_EXT, 4);
+
+	// Компонуем программу и проверяем ее статус
+	ProgramLinker linker;
+	linker.LinkProgram(m_program);
+	linker.CheckStatus();
+
+	// Получаем расположение uniform-переменных, используемых в
+	// шейдерной программе
+	/*m_sizeLocation = m_program.GetUniformLocation("Size");
+	m_textureMapLocation = m_program.GetUniformLocation("TextureMap");*/
+}
+
 void Window::OnRunStart()
 {
-	// Включаем режим отбраковки граней
-	// Отбраковываться будут нелицевые стороны граней
-	// Сторона примитива считается лицевой, если при ее рисовании
-	// обход верших осуществляется против часовой стрелки
 	glFrontFace(GL_CCW);
 
-	// Включаем тест глубины для удаления невидимых линий и поверхностей
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -103,7 +135,7 @@ void Window::Draw(int width, int height)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	SetupCameraMatrix();
-	m_scene.Draw();
+	Scene::Draw();
 }
 
 void Window::SetupCameraMatrix()

@@ -2,10 +2,10 @@
 #include "Scene.h"
 #include "CTextureLoader.h"
 #include "Cube.h"
+#include "House.h"
+#include "Land.h"
 #include "Pyramid.h"
 #include "TextureResourceName.h"
-#include "Land.h"
-#include "House.h"
 
 namespace
 {
@@ -26,7 +26,7 @@ std::shared_ptr<Pyramid> CreatePyramid(Pyramid::PyramidSideSize&& size, float he
 
 	return pyramid;
 }
-}
+} // namespace
 
 void Scene::Draw() const
 {

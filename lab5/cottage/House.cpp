@@ -162,6 +162,7 @@ void DrawGarade(CreateCubeHandler cubeHandler, const TextureProvider& texturePro
 
 void DrawRoof(CreatePyramidHandler pyramidHandler, const TextureProvider& textureProvider)
 {
+	// use transform and scale on texture matrix with model-view matrix
 	auto pyramid = pyramidHandler({ 1.0f, 2.0f, 3.0f, 4.0f }, 0.7);
 	auto woodTexture = textureProvider.GetTexture(texture::name::WOOD_TEXTURE);
 	glEnable(GL_TEXTURE_2D);
@@ -203,6 +204,7 @@ void DrawRoof(CreatePyramidHandler pyramidHandler, const TextureProvider& textur
 
 void House::Draw(CreatePyramidHandler pyramidHandler, CreateCubeHandler cubeHandler, const TextureProvider& textureProvider)
 {
+	// make House state great again
 	DrawHouseMainPart(cubeHandler, textureProvider); // TODO: remove invokation functions with same params
 	DrawHouseAdditionalPart(cubeHandler, textureProvider);
 	DrawWindows(cubeHandler, textureProvider);

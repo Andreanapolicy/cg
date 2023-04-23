@@ -10,7 +10,7 @@ constexpr double FIELD_OF_VIEW = 60 * M_PI / 180.0;
 constexpr double CUBE_SIZE = 1;
 
 constexpr double Z_NEAR = 0.1;
-constexpr double Z_FAR = 20;
+constexpr double Z_FAR = 40;
 
 // Ортонормируем матрицу 4*4 (это должна быть аффинная матрица)
 glm::dmat4x4 Orthonormalize(const glm::dmat4x4& m)
@@ -31,7 +31,7 @@ glm::dmat4x4 Orthonormalize(const glm::dmat4x4& m)
 Window::Window(int w, int h, const char* title)
 	: BaseWindow(w, h, title)
 {
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 }
 
 void Window::OnMouseButton(int button, int action, int mods)
@@ -73,11 +73,11 @@ void Window::SetupFog()
 {
 	if (m_isFogEnabled)
 	{
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		const float density = 0.2f;
 		glEnable(GL_FOG);
-		glFogi(GL_FOG_MODE, GL_EXP2);
-		glFogf(GL_FOG_COLOR, (0.5f, 0.5f, 0.5f, 1.0f));
+		glFogi(GL_FOG_MODE, GL_EXP);
+		glFogf(GL_FOG_COLOR, (0.1f, 0.1f, 0.1f, 1.0f));
 		glFogf(GL_FOG_DENSITY, density);
 	}
 	else
@@ -152,7 +152,7 @@ void Window::OnRunStart()
 
 void Window::Draw(int width, int height)
 {
-	glClearColor(1, 1, 1, 1);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	SetupCameraMatrix();

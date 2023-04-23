@@ -21,7 +21,7 @@ void ProgramLinker::CheckStatus()
 		if (program.GetParameter(GL_LINK_STATUS) != GL_TRUE)
 		{
 			hasErrors = true;
-			strm << "Program " << program << " linkage failed: " << program.GetInfoLog() << "\n";
+			strm << "Program " << program << " linkage failed: " << program.GetInfoLog() << std::endl;
 		}
 	}
 

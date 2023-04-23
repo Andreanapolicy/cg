@@ -1,35 +1,17 @@
 #pragma once
 #include "pch.h"
 
-/*
-Базовый класс для работы с шейдерный объектом OpenGL
-*/
 class CShaderBase
 {
-	// Защищенные конструктор и деструктор сделают
-	// возможным использование данного класса только
-	// для его потомков
 protected:
 	CShaderBase(GLuint shader = 0)
 		: m_shader(shader)
 	{
 	}
 
-	// Объявляем деструктор защищенным, т.к. в противном
-	// случае компилятор сделал бы его публичным
-	// Объявлять деструктор виртуальным нет необходимости
-	// т.к. деструктор защищен от вызова извне, а значит
-	// удалить CShaderBase напрямую не получится (только удалив
-	// его наследника)
-	~CShaderBase()
-	{
-		// Данный деструктор не делает ничего
-		// Освобождением ресурсов будет заниматься
-		// класс-потомок
-	}
+	~CShaderBase() = default;
 
 public:
-	// Задаем исходный код шейдера
 	void SetSource(GLsizei count, const GLchar** strings, const GLint* lengths)
 	{
 		assert(m_shader != 0);
@@ -37,28 +19,24 @@ public:
 		glShaderSource(m_shader, count, strings, lengths);
 	}
 
-	// Задаем исходный код шейдера (в одной строке)
 	void SetSource(const GLchar* source, GLint length)
 	{
 		const GLchar** ppSource = &source;
 		SetSource(1, ppSource, &length);
 	}
 
-	// Задаем исходный код шейдера (одна ASCIIZ-строка)
 	void SetSource(const GLchar* source)
 	{
 		const GLchar** ppSource = &source;
 		SetSource(1, ppSource, NULL);
 	}
 
-	// Получаем значение некоторого параметра шейдера
 	void GetParameter(GLenum pname, GLint* param) const
 	{
 		assert(m_shader != 0);
 		glGetShaderiv(m_shader, pname, param);
 	}
 
-	// Упрощенный вариант предыдущего метода
 	GLint GetParameter(GLenum pname) const
 	{
 		GLint value;
@@ -66,15 +44,12 @@ public:
 		return value;
 	}
 
-	// Получаем информационный лог от шейдера
 	void GetInfoLog(GLsizei bufSize, GLsizei* length, GLchar* infoLog) const
 	{
 		assert(m_shader != 0);
 		glGetShaderInfoLog(m_shader, bufSize, length, infoLog);
 	}
 
-	// Получаем информационный лог от шейдера
-	// (упрощенный вариант)
 	std::string GetInfoLog() const
 	{
 		GLint length = GetParameter(GL_INFO_LOG_LENGTH);
@@ -91,27 +66,22 @@ public:
 		}
 	}
 
-	// Получаем идентификатор шейдерного объекта
 	operator GLuint() const
 	{
 		return m_shader;
 	}
 
-	// Получаем идентификатор шейдерного объекта (альтернативный вариант)
 	GLuint Get() const
 	{
 		return m_shader;
 	}
 
-	// Компилируем ешйдер
 	void Compile()
 	{
 		assert(m_shader != 0);
 		glCompileShader(m_shader);
 	}
 
-	// Присоединяем шейдерный объект к классу и возвращаем
-	// дескриптор ранее присоединенного
 	GLuint Attach(GLuint shader)
 	{
 		GLuint tmp = m_shader;
@@ -119,13 +89,11 @@ public:
 		return tmp;
 	}
 
-	// Отсоединяем шейдерный объект
 	GLuint Detach()
 	{
 		return Attach(0);
 	}
 
-	// Удаляем шейдерный объект
 	void Delete()
 	{
 		assert(m_shader != 0);
@@ -137,19 +105,12 @@ public:
 	}
 
 private:
-	// Делаем недоступными конструктор копирования
-	// и оператор присваивания
 	CShaderBase(CShaderBase const&);
 	CShaderBase& operator=(CShaderBase const&);
 
 	GLuint m_shader;
 };
 
-/*
-Шаблонная реализация класса "Шейдерный объект OpenGL"
-Параметр t_managed определяет, будет ли время жизни
-шейдерного объекта управляться классом CShaderImpl или нет
-*/
 template <bool t_managed>
 class CShaderImpl : public CShaderBase
 {
@@ -159,15 +120,9 @@ public:
 	{
 	}
 
-	// Оператор присваивания выполняет
 	CShaderImpl& operator=(GLuint shader)
 	{
-		// Удаляем текущий шейдерный объект только если:
-		if (
-			t_managed && // Класс управляет шейдерным объектом
-			(Get() != 0) && // Задан текущий шейдерный объект
-			(Get() != shader) // И он не совпадает с переданным
-		)
+		if (t_managed && (Get() != 0) && (Get() != shader))
 		{
 			Delete();
 		}
@@ -175,11 +130,8 @@ public:
 		return *this;
 	}
 
-	// Создаем шейдер заданного типа
 	GLuint Create(GLenum type)
 	{
-		// Удаляем старый шейдерный объект в случае необходимости
-		// (если он задан и класс управляет шейдером)
 		if ((Get() != 0) && t_managed)
 		{
 			Delete();
@@ -189,8 +141,6 @@ public:
 		return shader;
 	}
 
-	// Деструктор удалит текущий шейдерный объект (если класс управляет
-	// шейдерным объектом)
 	~CShaderImpl(void)
 	{
 		if (t_managed && (Get() != 0))
@@ -200,18 +150,9 @@ public:
 	}
 };
 
-// Тип "Шейдерный объект"
-// (с автоматическим управлением времем жизни
-// шейдерного объекта OpenGL)
 typedef CShaderImpl<true> CShader;
-// Тип "Дескриптор шейдерного объекта"
-// (без автоматического управления временем
-// жизни шейдерного объекта OpenGL)
 typedef CShaderImpl<false> CShaderHandle;
 
-/*
-Класс "Базовый программный объект OpenGL"
-*/
 class CProgramBase
 {
 protected:
@@ -220,26 +161,17 @@ protected:
 	{
 	}
 
-	// Объявляем деструктор защищенным, чтобы нельзя было удалить
-	// экземпляр класса через CPrograBase
-	~CProgramBase()
-	{
-	}
-
 public:
-	// Получаем целочисленный идентификатор программного объекта
 	operator GLuint() const
 	{
 		return m_program;
 	}
 
-	// Получае целочисленный идентификатор программного объекта
 	GLuint Get() const
 	{
 		return m_program;
 	}
 
-	// Удаляем программный объект
 	void Delete()
 	{
 		if (m_program != 0)
@@ -249,8 +181,6 @@ public:
 		}
 	}
 
-	// Присоединям к объекту класса дескриптор программного объекта,
-	// возвращая ранее существующий
 	GLuint Attach(GLuint program)
 	{
 		GLuint tmp = m_program;
@@ -258,46 +188,36 @@ public:
 		return tmp;
 	}
 
-	/*
-	Присоединяем к программе шейдер с указанным идентификатором
-	*/
 	void AttachShader(GLuint shader)
 	{
 		assert(m_program != 0);
 		glAttachShader(m_program, shader);
 	}
 
-	// Отсоединяем шейдер с указанным идентификатором
 	void DetachShader(GLuint shader)
 	{
 		assert(m_program != 0);
 		glDetachShader(m_program, shader);
 	}
 
-	// Выполняем компоновку программы
 	void Link() const
 	{
 		assert(m_program);
 		glLinkProgram(m_program);
 	}
 
-	// Проверяем, возможна ли корректная работа шейдерной программы
-	// с текущим состоянием OpenGL
 	void Validate() const
 	{
 		assert(m_program);
 		glValidateProgram(m_program);
 	}
 
-	// Получаем информацию о программе в текстовом виде
 	void GetInfoLog(GLsizei bufSize, GLsizei* length, GLchar* infoLog) const
 	{
 		assert(m_program != 0);
 		glGetProgramInfoLog(m_program, bufSize, length, infoLog);
 	}
 
-	// Получаем информацию о программе в текстовом виде
-	// (упрощенный вариант)
 	std::string GetInfoLog() const
 	{
 		GLint length = GetParameter(GL_INFO_LOG_LENGTH);
@@ -314,49 +234,39 @@ public:
 		}
 	}
 
-	// Задаем параметр программного объекта
 	void GetParameter(GLenum pname, GLint* param) const
 	{
 		assert(m_program != 0);
 		glGetProgramiv(m_program, pname, param);
 	}
 
-	// Получаем расположение uniform-переменной с
-	// указанным именем
 	GLint GetUniformLocation(const GLchar* name) const
 	{
 		assert(m_program);
 		return glGetUniformLocation(m_program, name);
 	}
 
-	// Получаем расположение атрибутивной переменной
-	// с заданным именем.
 	GLint GetAttribLocation(const GLchar* name) const
 	{
 		assert(m_program);
 		return glGetAttribLocation(m_program, name);
 	}
 
-	// Возвращаем количество активных uniform-переменных
 	GLuint GetActiveUniforms() const
 	{
 		return GetParameter(GL_ACTIVE_UNIFORMS);
 	}
 
-	// Возвращаем количество активных attribute-переменных
 	GLuint GetActiveAttributes() const
 	{
 		return GetParameter(GL_ACTIVE_ATTRIBUTES);
 	}
 
-	// Возвращаем максимальную длину для хранения имени
-	// uniform-переменной программы
 	GLuint GetActiveUniformMaxLength() const
 	{
 		return GetParameter(GL_ACTIVE_UNIFORM_MAX_LENGTH);
 	}
 
-	// Получаем информацию об имени, типе и размере uniform-переменной
 	void GetActiveUniform(
 		GLuint index, GLsizei maxLength,
 		GLsizei* length, GLint* size,
@@ -367,39 +277,29 @@ public:
 		glGetActiveUniform(m_program, index, maxLength, length, size, type, name);
 	}
 
-	// Получаем информацию об имени, типе и размере uniform-переменной
-	// более простым способом
 	std::string GetActiveUniform(GLuint index, GLint* size, GLenum* type) const
 	{
-		// Узнаем размер буфера для хранения имени
 		GLuint bufferLength = GetActiveUniformMaxLength();
 		if (!bufferLength)
 		{
-			// Нет активных uniform переменных
 			return std::string();
 		}
 		std::vector<char> buffer(bufferLength);
 		GLsizei nameLength = 0;
 
-		// Получаем имя, тип и размер переменной
 		GetActiveUniform(
 			index, bufferLength,
 			&nameLength, size,
 			type, &buffer[0]);
 
-		// Переводим их в строковое представление
 		return std::string(&buffer[0], &buffer[nameLength]);
 	}
 
-	// Возвращаем максимальную длину для хранения имени
-	// attribute-переменной программы
 	GLuint GetActiveAttributeMaxLength() const
 	{
 		return GetParameter(GL_ACTIVE_ATTRIBUTE_MAX_LENGTH);
 	}
 
-	// Получаем информацию об имени, типе, длине и размере активной
-	// attribute-переменной
 	void GetActiveAttrib(GLuint index, GLsizei maxLength, GLsizei* length, GLint* size, GLenum* type, GLchar* name) const
 	{
 		assert(m_program);
@@ -407,27 +307,21 @@ public:
 		glGetActiveAttrib(m_program, index, maxLength, length, size, type, name);
 	}
 
-	// Получаем информацию об имени, размере и типе активной
-	// attribute-переменной более простым способом
 	std::string GetActiveAttrib(GLuint index, GLint* size, GLenum* type) const
 	{
 		GLuint bufferLength = GetActiveAttributeMaxLength();
 		if (!bufferLength)
 		{
-			// Нет активных атрибутивных переменных
 			return std::string();
 		}
 		std::vector<char> buffer(bufferLength);
 		GLsizei nameLength = 0;
 
-		// Получаем имя, тип и размер переменной
 		GetActiveAttrib(index, bufferLength, &nameLength, size, type, &buffer[0]);
 
-		// Переводим их в строковое представление
 		return std::string(&buffer[0], &buffer[nameLength]);
 	}
 
-	// Получаем параметр программного объекта
 	GLint GetParameter(GLenum pname) const
 	{
 		GLint value = 0;
@@ -435,11 +329,10 @@ public:
 		return value;
 	}
 
-	// Задаем параметр программного объекта
 	void SetParameter(GLenum pname, GLint value)
 	{
 		assert(m_program);
-		//glProgramParameteri(m_program, pname, value);
+		glProgramParameteri(m_program, pname, value);
 	}
 
 private:
@@ -448,9 +341,6 @@ private:
 	GLuint m_program;
 };
 
-/*
-Управляемая либо неуправляемая реализация программного объекта
-*/
 template <bool t_managed>
 class CProgramImpl : public CProgramBase
 {
@@ -460,7 +350,6 @@ public:
 	{
 	}
 
-	// Создаем программный объект и возвращаем его идентификатор
 	GLuint Create()
 	{
 		if (t_managed && (Get() != 0))
@@ -472,10 +361,8 @@ public:
 		return program;
 	}
 
-	// Выполняем замену текущего программного объекта
 	CProgramImpl& operator=(GLuint program)
 	{
-		// Удаляем ранее присоединенную программу
 		if (t_managed && (Get() != 0) && (Get() != program))
 		{
 			Delete();
@@ -486,10 +373,8 @@ public:
 		return *this;
 	}
 
-	// Деструктор программного объекта
 	~CProgramImpl()
 	{
-		// удаляем объект OpenGL (если он управляется классом)
 		if (t_managed && Get() != 0)
 		{
 			Delete();
@@ -497,12 +382,5 @@ public:
 	}
 };
 
-// Тип "Программа"
-// (с автоматическим управлением времем жизни
-// программного объекта OpenGL)
 typedef CProgramImpl<true> CProgram;
-
-// Тип "Дескриптор программы"
-// (без автоматического управления временем жизни
-// программного объекта OpenGL)
 typedef CProgramImpl<false> CProgramHandle;

@@ -9,18 +9,8 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{ce24530a-89bb-49e4-b3a2-795046652abb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="glud">
-      <UniqueIdentifier>{528d8c3c-52e6-42f5-bdf7-5f2624c93cc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KHR">
-      <UniqueIdentifier>{7b86f57c-d88b-43f0-bbe6-093a105160e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

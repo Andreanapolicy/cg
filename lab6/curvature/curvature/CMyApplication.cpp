@@ -49,7 +49,7 @@ void CMyApplication::OnDisplay()
 	glUseProgram(m_program);
 
 	glPushMatrix();
-	glScalef(0.3f, 0.2f, 0.3f);
+	glScalef(0.045f, 0.045f, 0.045f);
 
 	Scene::Draw();
 	glPopMatrix();

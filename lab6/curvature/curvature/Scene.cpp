@@ -7,7 +7,7 @@ void Scene::Draw()
 	auto z = 1.0f;
 	glPointSize(2.0f);
 	glBegin(GL_LINES);
-	auto step = M_PI / 10000;
+	auto step = M_PI / 1000;
 
 	for (float x = 0; x < 2 * M_PI; x += step)
 	{

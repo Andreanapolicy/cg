@@ -5,6 +5,11 @@
 #include "ShaderCompiler.h"
 #include "ShaderLoader.h"
 
+namespace
+{
+constexpr float ANIMATION_PERIOD = 1.0f;
+}
+
 CMyApplication::CMyApplication(const char* title, int width, int height, int argc, char* argv[])
 	: CGLApplication(title, argc, argv, width, height)
 {
@@ -13,6 +18,24 @@ CMyApplication::CMyApplication(const char* title, int width, int height, int arg
 void CMyApplication::OnInit()
 {
 	InitShaders();
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	GLint phaseLocation = m_program.GetUniformLocation("phase");
+}
+
+void CMyApplication::OnIdle()
+{
+	m_animationController.Tick();
+
+	float delta = m_animationController.GetTimeDelta() * 0.0005f;
+	m_phase += delta;
+
+	if (m_phase > ANIMATION_PERIOD)
+	{
+		m_phase = std::fmodf(m_phase, ANIMATION_PERIOD);
+	}
+	PostRedisplay();
 }
 
 void CMyApplication::InitShaders()
@@ -32,10 +55,6 @@ void CMyApplication::InitShaders()
 	compiler.CompileShader(m_vertexShader);
 	compiler.CheckStatus();
 
-	m_program.SetParameter(GL_GEOMETRY_INPUT_TYPE_ARB, GL_POINTS);
-	m_program.SetParameter(GL_GEOMETRY_OUTPUT_TYPE_ARB, GL_TRIANGLE_STRIP);
-	m_program.SetParameter(GL_GEOMETRY_VERTICES_OUT_EXT, 4);
-
 	ProgramLinker linker;
 	linker.LinkProgram(m_program);
 	linker.CheckStatus();
@@ -43,14 +62,14 @@ void CMyApplication::InitShaders()
 
 void CMyApplication::OnDisplay()
 {
-	glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(m_program);
+	glUniform1f(m_program.GetUniformLocation("phase"), m_phase);
 
 	glPushMatrix();
-	glScalef(0.3f, 0.2f, 0.3f);
-
+	glScalef(0.1f, 0.1f, 0.1f);
 	Scene::Draw();
 	glPopMatrix();
 

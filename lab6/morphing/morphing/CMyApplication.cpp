@@ -28,7 +28,7 @@ void CMyApplication::OnIdle()
 {
 	m_animationController.Tick();
 
-	float delta = m_animationController.GetTimeDelta() * 0.0005f;
+	float delta = m_animationController.GetTimeDelta() * 0.0003f;
 	m_phase += delta;
 
 	if (m_phase > ANIMATION_PERIOD)

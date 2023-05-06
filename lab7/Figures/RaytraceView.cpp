@@ -14,26 +14,32 @@
 #include "Sphere.h"
 #include "TriangleMesh.h"
 
+namespace
+{
+constexpr float WIDTH = 1200.0f;
+constexpr float HEIGHT = 600.0f;
+constexpr float Z_NEAR = 0.1f;
+constexpr float Z_FAR = 2.0f;
+}
+
+
 CRaytraceView::CRaytraceView()
-	: m_pFrameBuffer(std::make_unique<CFrameBuffer>(1200, 600))
+	: m_pFrameBuffer(std::make_unique<CFrameBuffer>(WIDTH, HEIGHT))
 {
 	m_scene.SetBackdropColor(CVector4f(1, 0, 1, 1));
 
 	AddSomePlane();
-
 	AddSomeSpheres();
-
 	AddSomeLight();
-
 	AddSomeTetrahedron();
 	AddSomeCube();
 
 	/*
 	Задаем параметры видового порта и матрицы проецирования в контексте визуализации
 	*/
-	m_context.SetViewPort(CViewPort(0, 0, 1200, 600));
+	m_context.SetViewPort(CViewPort(0, 0, WIDTH, HEIGHT));
 	CMatrix4d proj;
-	proj.LoadPerspective(60, 1200.0 / 600.0, 0.1, 10);
+	proj.LoadPerspective(60, WIDTH / HEIGHT, Z_NEAR, Z_FAR);
 	m_context.SetProjectionMatrix(proj);
 
 	// Задаем матрицу камеры

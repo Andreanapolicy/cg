@@ -4,10 +4,11 @@
 void Draw()
 {
 	auto character = Ejik();
-	character.Draw(200, 200);
+	character.Draw(-100, 0);
+	character.Draw(100, 0);
+	character.Draw(300, 0);
 }
 
-// Driver Code
 int main(int argc, char** argv)
 {
 	GlutInitializer glutInit = GlutInitializer(argc, argv, Draw);

@@ -6,13 +6,10 @@
 CSphere::CSphere(double radius, CVector3d const& center, CMatrix4d const& transform)
 :CGeometryObjectWithInitialTransformImpl(transform)
 {
-	// Сфера заданного радиуса и с центром в заданной точке получается
-	// путем масштабирования и переносы базовой сферы (сфера радиуса 1 с центром в начале координат)
 	CMatrix4d initialTransform;
 	initialTransform.Translate(center.x, center.y, center.z);
 	initialTransform.Scale(radius, radius, radius);
 
-	// Задаем начальную трансформацию базовой сферы
 	SetInitialTransform(initialTransform);
 }
 

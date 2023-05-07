@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "Renderer.h"
-#include "RenderContext.h"
-#include "Scene.h"
 #include "IGeometryObject_fwd.h"
+#include "RenderContext.h"
+#include "Renderer.h"
+#include "Scene.h"
 
 class CFrameBuffer;
 
@@ -26,6 +26,7 @@ class CRaytraceView : public CWindowImpl<CRaytraceView>
 	{
 		FRAMEBUFFER_UPDATE_TIMER = 1
 	};
+
 public:
 	CRaytraceView();
 	~CRaytraceView();
@@ -42,10 +43,6 @@ public:
 		MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd)
 	END_MSG_MAP()
 
-// Handler prototypes (uncomment arguments if needed):
-//	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-//	LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-//	LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 private:
 	LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 	LRESULT OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
@@ -55,29 +52,27 @@ private:
 	void AddSomePlane();
 	void AddSomeSpheres();
 	void AddSomeLight();
-	void AddSomeConicCylinders();
 	void AddSomeTetrahedron();
-	void AddSomeCube();
+	void AddCube(float size = 1.0f);
 
-	// Отрисовка содержимого буфера кадра на контексте устройства
-	void DrawFrameBuffer(CDC & dc, int x, int y);
+	void DrawFrameBuffer(CDC& dc, int x, int y);
 	bool UpdateFrameBuffer();
 
-	// Методы создания и добавления шейдеров в коллекцию m_shaders
-	CSimpleDiffuseShader & CreateSimpleDiffuseShader(CSimpleMaterial const& material);
-	CCheckerShader & CreateCheckerShader(CMatrix4d const& textureTransform);
+	CSimpleDiffuseShader& CreateSimpleDiffuseShader(CSimpleMaterial const& material);
+	CCheckerShader& CreateCheckerShader(CMatrix4d const& textureTransform);
 
 	// Методы, создающие и добавляющие объекты к сцене
-	CSceneObject & AddSphere(IShader const& shader, double radius = 1, CVector3d const& center = CVector3d(), CMatrix4d const& transform = CMatrix4d());
-	CSceneObject & AddPlane(IShader const& shader, double a, double b, double c, double d, CMatrix4d const& transform = CMatrix4d());
-	CSceneObject & AddSceneObject(IGeometryObject const& object, IShader const& shader);
-	CSceneObject & AddTriangleMesh(IShader const& shader, CTriangleMeshData const* pMeshData, CMatrix4d const& transform = CMatrix4d());
-	CTriangleMeshData * CreateTriangleMeshData(std::vector<Vertex> const& vertices, std::vector<Face> const& faces);
+	CSceneObject& AddSphere(IShader const& shader, double radius = 1, CVector3d const& center = CVector3d(), CMatrix4d const& transform = CMatrix4d());
+	CSceneObject& AddPlane(IShader const& shader, double a, double b, double c, double d, CMatrix4d const& transform = CMatrix4d());
+	CSceneObject& AddSceneObject(IGeometryObject const& object, IShader const& shader);
+	CSceneObject& AddTriangleMesh(IShader const& shader, CTriangleMeshData const* pMeshData, CMatrix4d const& transform = CMatrix4d());
+	CTriangleMeshData* CreateTriangleMeshData(std::vector<Vertex> const& vertices, std::vector<Face> const& faces);
+
 private:
 	CStatusBarCtrl m_statusBar;
 	CRenderContext m_context;
 	CRenderer m_renderer;
-	CScene	m_scene;
+	CScene m_scene;
 
 	std::unique_ptr<CFrameBuffer> m_pFrameBuffer;
 

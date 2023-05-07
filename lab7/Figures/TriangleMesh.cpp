@@ -174,7 +174,7 @@ CTriangleMeshData::CTriangleMeshData(std::vector<Vertex> const& vertices, std::v
 		size_t i0 = size_t(face.vertex0);
 		size_t i1 = size_t(face.vertex1);
 		size_t i2 = size_t(face.vertex2);
-		assert(i0 <numVertices && i1 < numVertices && i2 < numVertices);
+		assert(i0 < numVertices && i1 < numVertices && i2 < numVertices);
 
 		CTriangle triangle(m_vertices[i0], m_vertices[i1], m_vertices[i2], face.isFlat);
 		m_triangles.push_back(triangle);

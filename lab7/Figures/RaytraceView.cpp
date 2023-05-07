@@ -29,10 +29,9 @@ CRaytraceView::CRaytraceView()
 	m_scene.SetBackdropColor(CVector4f(1, 0, 1, 1));
 
 	AddSomePlane();
-	AddSomeSpheres();
 	AddSomeLight();
 	AddSomeTetrahedron();
-	AddSomeCube();
+	AddCube();
 
 	/*
 	Задаем параметры видового порта и матрицы проецирования в контексте визуализации
@@ -97,39 +96,6 @@ void CRaytraceView::AddSomeTetrahedron()
 
 	// Грани
 	std::vector<Face> faces;
-	faces.push_back(Face(0, 2, 3));
-	faces.push_back(Face(3, 0, 1));
-	faces.push_back(Face(3, 1, 2));
-	faces.push_back(Face(3, 2, 0));
-
-	// Данные полигональной сетки
-	CTriangleMeshData* pMeshData = CreateTriangleMeshData(vertices, faces);
-
-	CMatrix4d transform;
-	transform.Translate(0, 2.3, -1);
-	transform.Rotate(170, 0, 1, 0);
-	CSimpleMaterial blue;
-	blue.SetDiffuseColor(CVector4f(0.5f, 0.8f, 1, 1));
-
-	AddTriangleMesh(CreateSimpleDiffuseShader(blue), pMeshData, transform);
-}
-
-// Добавляем куб
-void CRaytraceView::AddSomeCube()
-{
-	// Вершины
-	CVector3d v0(-1, 0, 1);
-	CVector3d v1(+1, 0, 1);
-	CVector3d v2(0, 0, -1);
-	CVector3d v3(0, 2, 0);
-	std::vector<Vertex> vertices;
-	vertices.push_back(Vertex(v0));
-	vertices.push_back(Vertex(v1));
-	vertices.push_back(Vertex(v2));
-	vertices.push_back(Vertex(v3));
-
-	// Грани
-	std::vector<Face> faces;
 	faces.push_back(Face(0, 2, 1));
 	faces.push_back(Face(3, 0, 1));
 	faces.push_back(Face(3, 1, 2));
@@ -139,7 +105,7 @@ void CRaytraceView::AddSomeCube()
 	CTriangleMeshData* pMeshData = CreateTriangleMeshData(vertices, faces);
 
 	CMatrix4d transform;
-	transform.Translate(3, 0.3, -1);
+	transform.Translate(0, 0.3, 1);
 	transform.Rotate(170, 0, 1, 0);
 	CSimpleMaterial blue;
 	blue.SetDiffuseColor(CVector4f(0.5f, 0.8f, 1, 1));
@@ -147,12 +113,48 @@ void CRaytraceView::AddSomeCube()
 	AddTriangleMesh(CreateSimpleDiffuseShader(blue), pMeshData, transform);
 }
 
+void CRaytraceView::AddCube(float size)
+{
+	std::vector<Vertex> vertices = {
+		CVector3d(-0.5f, 0, 0.5f), // 0
+		CVector3d(0.5f, 0, 0.5f), // 1
+		CVector3d(0.5f, 0, -0.5f), // 2
+		CVector3d(-0.5f, 0, -0.5f), // 3
+		CVector3d(-0.5f, 1, 0.5f), // 4
+		CVector3d(0.5f, 1, 0.5f), // 5
+		CVector3d(0.5f, 1, -0.5f), // 6
+		CVector3d(-0.5f, 1, -0.5f), // 7
+	};
+
+	std::vector<Face> faces = {
+		Face(3, 1, 0), // y < 0
+		Face(3, 2, 1), // y < 0
+		Face(5, 6, 7), // y > 0
+		Face(5, 7, 4), // y > 0
+		Face(5, 4, 0), // z > 0
+		Face(5, 0, 1), // z > 0
+		Face(3, 7, 6), // z < 0
+		Face(3, 6, 2), // z < 0
+		Face(4, 7, 3), // x < 0
+		Face(4, 3, 0), // x < 0
+		Face(5, 2, 6), // x > 0
+		Face(5, 1, 2), // x > 0
+	};
+
+	CTriangleMeshData* pMeshData = CreateTriangleMeshData(vertices, faces);
+
+	CMatrix4d transform;
+	transform.Translate(1, 2, 4);
+	transform.Rotate(40, 1, 1, 2);
+	transform.Scale(0.5f * size, 0.5f * size, 0.5f * size);
+	CSimpleMaterial blue;
+	blue.SetDiffuseColor(CVector4f(0.5f, 0.8f, 0.1f, 1));
+
+	AddTriangleMesh(CreateSimpleDiffuseShader(blue), pMeshData, transform);
+}
+
 CRaytraceView::~CRaytraceView()
 {
-	// Необходимо остановить фоновую работу объекта CRenderer до разрушения
-	// данных класса CRaytraceView, т.к. CRenderer использует для своей работы
-	// другие объекты, в частности, буфер кадра, разрушать которые можно только
-	// после остановки CRenderer
 	m_renderer.Stop();
 }
 
@@ -164,7 +166,6 @@ BOOL CRaytraceView::PreTranslateMessage(MSG* pMsg)
 
 LRESULT CRaytraceView::OnEraseBkgnd(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-	// Сообщаем системе, что дальнейшая очистка буфера не требуется
 	return 1;
 }
 

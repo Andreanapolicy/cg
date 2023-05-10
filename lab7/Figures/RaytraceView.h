@@ -54,6 +54,7 @@ private:
 	void AddSomeLight();
 	void AddSomeTetrahedron();
 	void AddCube(float size = 1.0f);
+	void AddTorus();
 
 	void DrawFrameBuffer(CDC& dc, int x, int y);
 	bool UpdateFrameBuffer();
@@ -63,6 +64,7 @@ private:
 
 	// Методы, создающие и добавляющие объекты к сцене
 	CSceneObject& AddSphere(IShader const& shader, double radius = 1, CVector3d const& center = CVector3d(), CMatrix4d const& transform = CMatrix4d());
+	CSceneObject& AddTorus(IShader const& shader, double bigRadius = 2, double smallRadius = 1, CVector3d const& center = CVector3d(), CMatrix4d const& transform = CMatrix4d());
 	CSceneObject& AddPlane(IShader const& shader, double a, double b, double c, double d, CMatrix4d const& transform = CMatrix4d());
 	CSceneObject& AddSceneObject(IGeometryObject const& object, IShader const& shader);
 	CSceneObject& AddTriangleMesh(IShader const& shader, CTriangleMeshData const* pMeshData, CMatrix4d const& transform = CMatrix4d());

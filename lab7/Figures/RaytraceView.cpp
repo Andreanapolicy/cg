@@ -13,6 +13,7 @@
 #include "SimpleMaterial.h"
 #include "Sphere.h"
 #include "TriangleMesh.h"
+#include "Torus.h"
 
 namespace
 {
@@ -32,6 +33,7 @@ CRaytraceView::CRaytraceView()
 	AddSomeLight();
 	AddSomeTetrahedron();
 	AddCube();
+	AddTorus();
 
 	/*
 	Задаем параметры видового порта и матрицы проецирования в контексте визуализации
@@ -151,6 +153,20 @@ void CRaytraceView::AddCube(float size)
 	blue.SetDiffuseColor(CVector4f(0.5f, 0.8f, 0.1f, 1));
 
 	AddTriangleMesh(CreateSimpleDiffuseShader(blue), pMeshData, transform);
+}
+
+void CRaytraceView::AddTorus()
+{
+	CSimpleMaterial yellow;
+	yellow.SetDiffuseColor(CVector4f(0.4f, 0.4f, 0.4f, 1));
+	CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(yellow);
+
+	CMatrix4d transform;
+	transform.Translate(15, 15, 3);
+	double bigRadius = 3; 
+	double smallRadius = 1; 
+
+	AddTorus(shader, bigRadius, smallRadius, {-1, 10, 0}, transform);
 }
 
 CRaytraceView::~CRaytraceView()
@@ -274,6 +290,14 @@ bool CRaytraceView::UpdateFrameBuffer()
 
 	// Возвращаем true, если изображение в буфере кадра полностью построено
 	return m_renderer.GetProgress(renderedChunks, totalChunks);
+}
+
+CSceneObject& CRaytraceView::AddTorus(IShader const& shader, double bigRadius, double smallRadius, CVector3d const& center, CMatrix4d const& transform)
+{
+	const auto& sphere = *m_geometryObjects.emplace_back(
+		std::make_unique<Torus>(smallRadius, bigRadius, center, transform));
+
+	return AddSceneObject(sphere, shader);
 }
 
 CSceneObject& CRaytraceView::AddSphere(IShader const& shader, double radius, CVector3d const& center, CMatrix4d const& transform)

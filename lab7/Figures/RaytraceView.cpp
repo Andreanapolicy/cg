@@ -19,7 +19,7 @@ namespace
 {
 constexpr float WIDTH = 1200.0f;
 constexpr float HEIGHT = 600.0f;
-constexpr float Z_NEAR = 0.1f;
+constexpr float Z_NEAR = 1.0f;
 constexpr float Z_FAR = 2.0f;
 }
 
@@ -33,17 +33,13 @@ CRaytraceView::CRaytraceView()
 	AddSomeLight();
 	AddSomeTetrahedron();
 	AddCube(2);
-	AddTorus();
+	AddShit();
 
-	/*
-	Задаем параметры видового порта и матрицы проецирования в контексте визуализации
-	*/
 	m_context.SetViewPort(CViewPort(0, 0, WIDTH, HEIGHT));
 	CMatrix4d proj;
 	proj.LoadPerspective(60, WIDTH / HEIGHT, Z_NEAR, Z_FAR);
 	m_context.SetProjectionMatrix(proj);
 
-	// Задаем матрицу камеры
 	CMatrix4d modelView;
 	modelView.LoadLookAtRH(
 		0, 3, 7,
@@ -52,18 +48,14 @@ CRaytraceView::CRaytraceView()
 	m_context.SetModelViewMatrix(modelView);
 }
 
-// Добавляем бесконечную шахматную плоскость y = 0
 void CRaytraceView::AddSomePlane()
 {
-	// Задаем смещение текстурных координат в 1/2 размера шахматного кубика для того чтобы избежать
-	// визуальных артефактов при определении цвета клетки, связанных с погрешностями вычислений
 	CMatrix4d checkerShaderTransform;
 	checkerShaderTransform.Scale(0.2, 0.2, 0.2);
 	checkerShaderTransform.Translate(0.25, 0.25, 0.25);
 	AddPlane(CreateCheckerShader(checkerShaderTransform), 0, 1, 0, 0);
 }
 
-// Добавляем несколько сфер
 void CRaytraceView::AddSomeSpheres()
 {
 	CSimpleMaterial yellow;
@@ -73,7 +65,6 @@ void CRaytraceView::AddSomeSpheres()
 	AddSphere(shader, 0.5, CVector3d(2, 0, 0));
 }
 
-// Создаем и добавляем в сцену точечный источник света
 void CRaytraceView::AddSomeLight()
 {
 	COmniLightPtr pLight(new COmniLightSource(CVector3d(-5, 5, 10)));
@@ -82,10 +73,8 @@ void CRaytraceView::AddSomeLight()
 	m_scene.AddLightSource(pLight);
 }
 
-// Добавляем тетраэдр
 void CRaytraceView::AddSomeTetrahedron()
 {
-	// Вершины
 	CVector3d v0(-1, 0, 1);
 	CVector3d v1(+1, 0, 1);
 	CVector3d v2(0, 0, -1);
@@ -96,18 +85,16 @@ void CRaytraceView::AddSomeTetrahedron()
 	vertices.push_back(Vertex(v2));
 	vertices.push_back(Vertex(v3));
 
-	// Грани
 	std::vector<Face> faces;
 	faces.push_back(Face(0, 2, 1));
 	faces.push_back(Face(3, 0, 1));
 	faces.push_back(Face(3, 1, 2));
 	faces.push_back(Face(3, 2, 0));
 
-	// Данные полигональной сетки
 	CTriangleMeshData* pMeshData = CreateTriangleMeshData(vertices, faces);
 
 	CMatrix4d transform;
-	transform.Translate(0, 0.3, 1);
+	transform.Translate(-1, 0.3, 1);
 	transform.Rotate(170, 0, 1, 0);
 	CSimpleMaterial blue;
 	blue.SetDiffuseColor(CVector4f(0.5f, 0.8f, 1, 1));
@@ -146,7 +133,7 @@ void CRaytraceView::AddCube(float size)
 	CTriangleMeshData* pMeshData = CreateTriangleMeshData(vertices, faces);
 
 	CMatrix4d transform;
-	transform.Translate(2, 0.5, 0);
+	transform.Translate(1, 0.5, 0);
 	transform.Rotate(40, 1, 1, 2);
 	transform.Scale(0.5f * size, 0.5f * size, 0.5f * size);
 	CSimpleMaterial blue;
@@ -155,18 +142,56 @@ void CRaytraceView::AddCube(float size)
 	AddTriangleMesh(CreateSimpleDiffuseShader(blue), pMeshData, transform);
 }
 
-void CRaytraceView::AddTorus()
+void CRaytraceView::AddShit()
 {
-	CSimpleMaterial yellow;
-	yellow.SetDiffuseColor(CVector4f(1.0f, 1.0f, 1.0f, 1));
-	CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(yellow);
+	{
+		CSimpleMaterial material;
+		material.SetDiffuseColor(CVector4f(82.0f / 255.0f, 63.0f / 255.0f, 35.0f / 255.0f, 1));
+		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
-	CMatrix4d transform;
-	transform.Translate(-2, 0, 3);
-	double bigRadius = 1; 
-	double smallRadius = 0.5; 
+		CMatrix4d transform;
+		transform.Translate(3, 1, 2);
+		double bigRadius = 1; 
+		double smallRadius = 0.3; 
 
-	AddTorus(shader, bigRadius, smallRadius, {0, 0, 0}, transform);
+		AddTorus(shader, bigRadius, smallRadius, {0, 0, 0}, transform);
+	}
+
+	{
+		CSimpleMaterial material;
+		material.SetDiffuseColor(CVector4f(80.0f / 255.0f, 60.0f / 255.0f, 29.0f / 255.0f, 1));
+		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
+
+		CMatrix4d transform;
+		transform.Translate(3, 1.5, 2);
+		double bigRadius = 0.7; 
+		double smallRadius = 0.3; 
+
+		AddTorus(shader, bigRadius, smallRadius, {0, 0, 0}, transform);
+	}
+
+	{
+		CSimpleMaterial material;
+		material.SetDiffuseColor(CVector4f(100.0f / 255.0f, 54.0f / 255.0f, 30.0f / 255.0f, 1));
+		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
+
+		CMatrix4d transform;
+		transform.Translate(3, 2.0, 2);
+		double bigRadius = 0.4; 
+		double smallRadius = 0.3; 
+
+		AddTorus(shader, bigRadius, smallRadius, {0, 0, 0}, transform);
+	}
+
+	{
+		CSimpleMaterial material;
+		material.SetDiffuseColor(CVector4f(102.0f / 255.0f, 53.0f / 255.0f, 31.0f / 255.0f, 1));
+		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
+
+		CMatrix4d transform;
+		transform.Translate(3, 2.5, 2);
+		AddSphere(shader, 0.4, CVector3d(0, 0, 0), transform);
+	}
 }
 
 CRaytraceView::~CRaytraceView()

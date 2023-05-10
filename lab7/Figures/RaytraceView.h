@@ -54,7 +54,7 @@ private:
 	void AddSomeLight();
 	void AddSomeTetrahedron();
 	void AddCube(float size = 1.0f);
-	void AddTorus();
+	void AddShit();
 
 	void DrawFrameBuffer(CDC& dc, int x, int y);
 	bool UpdateFrameBuffer();

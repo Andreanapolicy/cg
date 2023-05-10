@@ -32,7 +32,7 @@ CRaytraceView::CRaytraceView()
 	AddSomePlane();
 	AddSomeLight();
 	AddSomeTetrahedron();
-	AddCube();
+	AddCube(2);
 	AddTorus();
 
 	/*
@@ -146,7 +146,7 @@ void CRaytraceView::AddCube(float size)
 	CTriangleMeshData* pMeshData = CreateTriangleMeshData(vertices, faces);
 
 	CMatrix4d transform;
-	transform.Translate(1, 2, 4);
+	transform.Translate(2, 0.5, 0);
 	transform.Rotate(40, 1, 1, 2);
 	transform.Scale(0.5f * size, 0.5f * size, 0.5f * size);
 	CSimpleMaterial blue;
@@ -158,15 +158,15 @@ void CRaytraceView::AddCube(float size)
 void CRaytraceView::AddTorus()
 {
 	CSimpleMaterial yellow;
-	yellow.SetDiffuseColor(CVector4f(0.4f, 0.4f, 0.4f, 1));
+	yellow.SetDiffuseColor(CVector4f(1.0f, 1.0f, 1.0f, 1));
 	CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(yellow);
 
 	CMatrix4d transform;
-	transform.Translate(15, 15, 3);
-	double bigRadius = 3; 
-	double smallRadius = 1; 
+	transform.Translate(-2, 0, 3);
+	double bigRadius = 1; 
+	double smallRadius = 0.5; 
 
-	AddTorus(shader, bigRadius, smallRadius, {-1, 10, 0}, transform);
+	AddTorus(shader, bigRadius, smallRadius, {0, 0, 0}, transform);
 }
 
 CRaytraceView::~CRaytraceView()

@@ -23,8 +23,9 @@ Torus::Torus(float smallRadius, float bigRadius, CVector3d const& center, CMatri
 
 bool Torus::Hit(CRay const& ray, CIntersection& intersection) const
 {
-	const auto rayOrigin = ray.GetStart();
-	const auto rayDirection = ray.GetDirection();
+	CRay invRay = Transform(ray, GetInverseTransform());
+	const auto rayOrigin = invRay.GetStart();
+	const auto rayDirection = invRay.GetDirection();
 
 	// Torus formul: (x^2 + y^2 + z^2 + R^2 - r^2)^2 - 4R^2(x^2 + y^2) = 0
 	// A*t^4 + B*t^3 + C*t^2 + D*t + E = 0
@@ -62,7 +63,6 @@ bool Torus::Hit(CRay const& ray, CIntersection& intersection) const
 		return false;
 	}
 
-	CRay invRay = Transform(ray, GetInverseTransform());
 	auto hitPoint0 = ray.GetPointAtTime(min);
 	auto hitPoint0InObjectSpace = invRay.GetPointAtTime(min);
 	auto hitNormal0InObjectSpace = hitPoint0InObjectSpace;

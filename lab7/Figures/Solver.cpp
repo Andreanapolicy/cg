@@ -93,6 +93,7 @@ std::vector<float> Solver::Solve3(const std::vector<float>& coefs)
 	return s;
 }
 
+//c[0] + c[1]*x + c[2]*x^2 + c[3]*x^3 + c[4]*x^4 = 0
 std::vector<float> Solver::Solve4(const std::vector<float>& coefs)
 {
 	/* normal form: x^4 + Ax^3 + Bx^2 + Cx + D = 0 */

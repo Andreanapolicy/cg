@@ -4,7 +4,7 @@
 class Torus : public CGeometryObjectWithInitialTransformImpl
 {
 public:
-	Torus(float smallRadius, float bigRadius,
+	Torus(float tubeRadius, float mainRadius,
 		CVector3d const& center = CVector3d(),
 		CMatrix4d const& transform = CMatrix4d());
 
@@ -13,6 +13,6 @@ public:
 	~Torus() = default;
 
 private:
-	float m_smallRadius;
-	float m_bigRadius;
+	float m_tubeRadius;
+	float m_mainRadius;
 };

@@ -19,8 +19,8 @@ namespace
 {
 constexpr float WIDTH = 1200.0f;
 constexpr float HEIGHT = 600.0f;
-constexpr float Z_NEAR = 1.0f;
-constexpr float Z_FAR = 2.0f;
+constexpr float Z_NEAR = 1.4f;
+constexpr float Z_FAR = 1.8f;
 }
 
 
@@ -33,7 +33,7 @@ CRaytraceView::CRaytraceView()
 	AddSomeLight();
 	AddSomeTetrahedron();
 	AddCube(2);
-	AddShit();
+	AddTorusPyromid();
 
 	m_context.SetViewPort(CViewPort(0, 0, WIDTH, HEIGHT));
 	CMatrix4d proj;
@@ -71,6 +71,11 @@ void CRaytraceView::AddSomeLight()
 	pLight->SetDiffuseIntensity(CVector4f(1, 1, 1, 1));
 	pLight->SetAttenuation(1, 0, 0.0005);
 	m_scene.AddLightSource(pLight);
+
+	COmniLightPtr pLight1(new COmniLightSource(CVector3d(5, 10, 0)));
+	pLight1->SetDiffuseIntensity(CVector4f(1, 1, 1, 1));
+	pLight1->SetAttenuation(0.8, 0, 0.0005);
+	m_scene.AddLightSource(pLight1);
 }
 
 void CRaytraceView::AddSomeTetrahedron()
@@ -142,11 +147,11 @@ void CRaytraceView::AddCube(float size)
 	AddTriangleMesh(CreateSimpleDiffuseShader(blue), pMeshData, transform);
 }
 
-void CRaytraceView::AddShit()
+void CRaytraceView::AddTorusPyromid()
 {
 	{
 		CSimpleMaterial material;
-		material.SetDiffuseColor(CVector4f(82.0f / 255.0f, 63.0f / 255.0f, 35.0f / 255.0f, 1));
+		material.SetDiffuseColor(CVector4f(241.0f / 255.0f, 128.0f / 255.0f, 183.0f / 255.0f, 1));
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
@@ -159,7 +164,7 @@ void CRaytraceView::AddShit()
 
 	{
 		CSimpleMaterial material;
-		material.SetDiffuseColor(CVector4f(80.0f / 255.0f, 60.0f / 255.0f, 29.0f / 255.0f, 1));
+		material.SetDiffuseColor(CVector4f(162.0f / 255.0f, 196.0f / 255.0f, 201.0f / 255.0f, 1));
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
@@ -172,7 +177,7 @@ void CRaytraceView::AddShit()
 
 	{
 		CSimpleMaterial material;
-		material.SetDiffuseColor(CVector4f(100.0f / 255.0f, 54.0f / 255.0f, 30.0f / 255.0f, 1));
+		material.SetDiffuseColor(CVector4f(204.0f / 255.0f, 0, 0, 1));
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
@@ -185,7 +190,7 @@ void CRaytraceView::AddShit()
 
 	{
 		CSimpleMaterial material;
-		material.SetDiffuseColor(CVector4f(102.0f / 255.0f, 53.0f / 255.0f, 31.0f / 255.0f, 1));
+		material.SetDiffuseColor(CVector4f(234.0f / 255.0f, 209.0f / 255.0f, 220.0f / 255.0f, 1));
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;

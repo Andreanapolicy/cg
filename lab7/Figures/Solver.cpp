@@ -111,9 +111,9 @@ std::vector<float> Solver::Solve4(const std::vector<float>& coefs)
 	float p = -3.0f / 8.0f * sq_A + B;
 	float q = 1.0f / 8.0f * sq_A * A - 1.0f / 2.0f * A * B + C;
 	float r = -3.0f / 256.0f * sq_A * sq_A + 1.0f / 16.0f * sq_A * B - 1.0f / 4.0f * A * C + D;
-	std::vector<float> s;
+	std::vector<float> s; // TODO: make array()
 
-	if (isZero(r))
+	if (isZero(r)) // TODO: coding convension
 	{
 		/* no absolute term: y(y^3 + py + q) = 0 */
 

@@ -58,12 +58,12 @@ bool Torus::Hit(CRay const& ray, CIntersection& intersection) const
 		}
 	}
 
-	if (min == FLT_MAX)
-	{
-		return false;
-	}
+	//if (min == FLT_MAX) // todo: CHECK
+	//{
+	//	return false;
+	//}
 
-	auto hitPoint = ray.GetPointAtTime(min);
+	auto hitPoint = ray.GetPointAtTime(min); // TODO: measure normal for Torus. Normal for sphere and for torus is not compatible
 	auto hitPointInObjectSpace = invRay.GetPointAtTime(min);
 	auto hitNormalInObjectSpace = hitPointInObjectSpace;
 	auto hitNormal = GetNormalMatrix() * hitNormalInObjectSpace;

@@ -29,7 +29,7 @@ CRaytraceView::CRaytraceView()
 {
 	m_scene.SetBackdropColor(CVector4f(1, 0, 1, 1));
 
-	AddSomePlane();
+	//AddSomePlane();
 	AddSomeLight();
 	AddSomeTetrahedron();
 	AddCube(2);
@@ -155,7 +155,7 @@ void CRaytraceView::AddTorusPyromid()
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
-		transform.Translate(3, 1, 2);
+		transform.Translate(3, 1, 2.2);
 		double bigRadius = 1; 
 		double smallRadius = 0.3; 
 
@@ -168,20 +168,20 @@ void CRaytraceView::AddTorusPyromid()
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
-		transform.Translate(3, 1.5, 2);
+		transform.Translate(3, 1.5, 2.2);
 		double bigRadius = 0.7; 
 		double smallRadius = 0.3; 
 
 		AddTorus(shader, bigRadius, smallRadius, {0, 0, 0}, transform);
 	}
 
-	{
+	/*{
 		CSimpleMaterial material;
 		material.SetDiffuseColor(CVector4f(204.0f / 255.0f, 0, 0, 1));
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
-		transform.Translate(3, 2.0, 2);
+		transform.Translate(3, 2.0, 2.2);
 		double bigRadius = 0.4; 
 		double smallRadius = 0.3; 
 
@@ -194,9 +194,9 @@ void CRaytraceView::AddTorusPyromid()
 		CSimpleDiffuseShader& shader = CreateSimpleDiffuseShader(material);
 
 		CMatrix4d transform;
-		transform.Translate(3, 2.5, 2);
+		transform.Translate(3, 2.5, 2.2);
 		AddSphere(shader, 0.4, CVector3d(0, 0, 0), transform);
-	}
+	}*/
 }
 
 CRaytraceView::~CRaytraceView()
